@@ -207,10 +207,11 @@
         }
 
         btn.addEventListener('click', toggle)
-        overlay.addEventListener('click', toggle)
 
         sidebar.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A') toggle()
+            if (e.target.tagName === 'A') {
+                if (window.innerWidth < 768) toggle()
+            }
         })
     </script>
 </body>
