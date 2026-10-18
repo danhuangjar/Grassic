@@ -16,9 +16,51 @@
             font-family: -apple-system, 'PingFang SC', 'Segoe UI', 'Microsoft YaHei', sans-serif;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* 顶部区域 */
+        /* 隐藏的复选框，控制手机端菜单 */
+        .menu-toggle {
+            display: none;
+        }
+
+        /* =========================================
+           手机端默认样式（侧边栏隐藏）
+           ========================================= */
+           
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: #ffffff;
+            padding: 80px 30px 30px 30px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-radius: 0 24px 24px 0;
+        }
+
+        .sidebar label {
+            display: block;
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            cursor: pointer;
+        }
+
+        /* 右侧主内容区 */
+        .main-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
         .header {
             display: flex;
             align-items: center;
@@ -26,7 +68,6 @@
             padding: 8px 20px 8px 12px;
         }
 
-        /* Logo */
         .logo {
             font-size: 20px;
             font-weight: 700;
@@ -35,17 +76,20 @@
             text-decoration: none;
         }
 
-        /* 菜单按钮 */
-        .menu {
-            width: 22px;
-            height: 16px;
+        /* 手机端菜单按钮（改为 1:1 的正方形） */
+        .menu-btn {
+            width: 20px; /* 宽高一致 */
+            height: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center; /* 垂直居中 */
+            gap: 4px; /* 线条之间的间距 */
             cursor: pointer;
+            z-index: 1001;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .menu span {
+        .menu-btn span {
             display: block;
             width: 100%;
             height: 2px;
@@ -53,9 +97,34 @@
             border-radius: 2px;
         }
 
-        /* 正文 */
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        /* ----- 核心交互逻辑（纯 CSS） ----- */
+        .menu-toggle:checked ~ .sidebar { transform: translateX(0); }
+        .menu-toggle:checked ~ .overlay { opacity: 1; visibility: visible; }
+        
+        /* 关键：被选中时，整个按钮旋转 90 度 */
+        .menu-toggle:checked ~ .main-wrapper .menu-btn { 
+            transform: rotate(90deg); 
+        }
+
         .content {
             padding: 20px;
+            flex: 1;
         }
 
         .content h1 {
@@ -71,23 +140,84 @@
             line-height: 1.6;
             color: #4a5a4e;
         }
+
+        /* =========================================
+           电脑端（大屏幕）样式
+           ========================================= */
+        @media (min-width: 768px) {
+            body {
+                display: flex;
+            }
+
+            .sidebar {
+                position: relative;
+                transform: none;
+                height: auto;
+                min-height: 100vh;
+                box-shadow: none;
+                border-radius: 0;
+                background: transparent;
+                border-right: 1px solid rgba(8, 141, 94, 0.15);
+                width: auto;
+                white-space: nowrap;
+                padding: 24px 40px;
+            }
+
+            .sidebar label {
+                font-size: 16px;
+                color: #4a5a4e;
+            }
+
+            .sidebar label:hover {
+                color: #088D5E;
+            }
+
+            .main-wrapper {
+                flex: 1;
+                width: auto;
+            }
+
+            .menu-btn, .overlay {
+                display: none;
+            }
+
+            .header { padding: 16px 40px; }
+            .content { padding: 40px; }
+            .content h1 { font-size: 36px; }
+            .content p { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <span class="logo">grassic</span>
-        <div class="menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </header>
+    <!-- 隐藏的复选框 -->
+    <input type="checkbox" id="menuToggle" class="menu-toggle">
 
-    <div class="content">
-        <h1>hello</h1>
-        <p>welcome to grassic</p>
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <label for="menuToggle">首页</label>
     </div>
+
+    <!-- 右侧主内容区 -->
+    <div class="main-wrapper">
+        <header class="header">
+            <span class="logo">grassic</span>
+            <!-- 菜单按钮 -->
+            <label for="menuToggle" class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </header>
+
+        <div class="content">
+            <h1>hello</h1>
+            <p>welcome to grassic</p>
+        </div>
+    </div>
+
+    <!-- 遮罩层 -->
+    <div class="overlay"></div>
 
 </body>
 </html>
