@@ -19,31 +19,22 @@
             overflow-x: hidden;
         }
 
-        /* =========================================
-           手机端默认样式
-           ========================================= */
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
             width: 260px;
             height: 100vh;
-            background: #D6E9C3; 
-            padding: 50px 0 30px 0; 
-            
-            /* JS 控制的核心：默认向左平移隐藏 */
+            background: #D6E9C3;
+            padding: 50px 0 30px 0;
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            
-            border-right: 2px solid #088D5E; 
+            border-right: 2px solid #088D5E;
             border-radius: 0 12px 12px 0;
             z-index: 1000;
-            
-            /* 强制开启 GPU 硬件加速，动画不卡顿 */
             will-change: transform;
         }
 
-        /* JS 会加上 .active 类，触发滑出动画 */
         .sidebar.active {
             transform: translateX(0);
         }
@@ -54,9 +45,9 @@
             color: #1a1a1a;
             font-size: 18px;
             font-weight: 600;
-            padding: 16px 30px; 
+            padding: 16px 30px;
             cursor: pointer;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08); 
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .sidebar label:last-child {
@@ -98,7 +89,6 @@
             will-change: transform;
         }
 
-        /* JS 会加上 .active 类，触发旋转 */
         .menu-btn.active {
             transform: rotate(90deg);
         }
@@ -111,7 +101,6 @@
             border-radius: 1px;
         }
 
-        /* 遮罩层 */
         .overlay {
             position: fixed;
             top: 0;
@@ -122,11 +111,9 @@
             opacity: 0;
             visibility: hidden;
             z-index: 999;
-            /* 去掉 blur 模糊，改用纯透明渐变，性能更好 */
             transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
         }
 
-        /* JS 会加上 .active 类，触发遮罩显示 */
         .overlay.active {
             opacity: 1;
             visibility: visible;
@@ -151,9 +138,6 @@
             color: #4a5a4e;
         }
 
-        /* =========================================
-           电脑端（大屏幕）样式
-           ========================================= */
         @media (min-width: 768px) {
             body {
                 display: flex;
@@ -161,12 +145,11 @@
 
             .sidebar {
                 position: relative;
-                /* 电脑端重置位移，直接显示 */
                 transform: none;
                 height: auto;
                 min-height: 100vh;
-                background: transparent; 
-                border-right: 2px solid #088D5E; 
+                background: transparent;
+                border-right: 2px solid #088D5E;
                 width: auto;
                 white-space: nowrap;
                 padding: 24px 0;
@@ -199,17 +182,13 @@
 </head>
 <body>
 
-    <!-- 侧边栏 -->
     <div class="sidebar" id="sidebar">
-        <!-- 点击菜单项也可以关闭菜单 -->
         <label class="close-menu">首页</label>
     </div>
 
-    <!-- 右侧主内容区 -->
     <div class="main-wrapper">
         <header class="header">
             <span class="logo">grassic</span>
-            <!-- 菜单按钮 -->
             <div class="menu-btn" id="menuBtn">
                 <span></span>
                 <span></span>
@@ -223,38 +202,29 @@
         </div>
     </div>
 
-    <!-- 遮罩层 -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- 交互脚本 -->
     <script>
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const closeMenuBtn = document.querySelector('.close-menu');
+        const menuBtn = document.getElementById('menuBtn')
+        const sidebar = document.getElementById('sidebar')
+        const overlay = document.getElementById('overlay')
+        const closeMenu = document.querySelector('.close-menu')
 
-        // 切换菜单状态的函数
         function toggleMenu() {
-            menuBtn.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-            
-            // 菜单打开时，禁止背景滚动
+            menuBtn.classList.toggle('active')
+            sidebar.classList.toggle('active')
+            overlay.classList.toggle('active')
+
             if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'
             } else {
-                document.body.style.overflow = '';
+                document.body.style.overflow = ''
             }
         }
 
-        // 点击三条杠按钮，切换菜单
-        menuBtn.addEventListener('click', toggleMenu);
-
-        // 点击遮罩层空白处，关闭菜单
-        overlay.addEventListener('click', toggleMenu);
-
-        // 点击侧边栏里面的文字，关闭菜单
-        closeMenuBtn.addEventListener('click', toggleMenu);
+        menuBtn.onclick = toggleMenu
+        overlay.onclick = toggleMenu
+        closeMenu.onclick = toggleMenu
     </script>
 </body>
 </html>
