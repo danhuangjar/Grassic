@@ -34,13 +34,14 @@
             left: 0;
             width: 260px;
             height: 100vh;
-            background: #ffffff;
-            padding: 80px 30px 30px 30px;
+            background: #D6E9C3; 
+            padding: 50px 0 30px 0; /* 上边距从 80px 改小到 50px，项目上移 */
             transform: translateX(-100%);
             transition: transform 0.3s ease;
             box-shadow: 4px 0 20px rgba(0,0,0,0.05);
             z-index: 1000;
-            border-radius: 0 24px 24px 0;
+            border-right: 2px solid #088D5E; 
+            border-radius: 0 12px 12px 0;
         }
 
         .sidebar label {
@@ -49,8 +50,18 @@
             color: #1a1a1a;
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 24px;
+            padding: 16px 30px; 
             cursor: pointer;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08); 
+            transition: background 0.2s ease;
+        }
+
+        .sidebar label:hover {
+            background: rgba(0, 0, 0, 0.03); 
+        }
+
+        .sidebar label:last-child {
+            border-bottom: none;
         }
 
         /* 右侧主内容区 */
@@ -76,14 +87,14 @@
             text-decoration: none;
         }
 
-        /* 手机端菜单按钮（改为 1:1 的正方形） */
+        /* 手机端菜单按钮（1:1 正方形） */
         .menu-btn {
-            width: 20px; /* 宽高一致 */
+            width: 20px;
             height: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* 垂直居中 */
-            gap: 4px; /* 线条之间的间距 */
+            justify-content: center;
+            gap: 4px;
             cursor: pointer;
             z-index: 1001;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -94,7 +105,7 @@
             width: 100%;
             height: 2px;
             background: #088D5E;
-            border-radius: 2px;
+            border-radius: 1px;
         }
 
         /* 遮罩层 */
@@ -117,7 +128,6 @@
         .menu-toggle:checked ~ .sidebar { transform: translateX(0); }
         .menu-toggle:checked ~ .overlay { opacity: 1; visibility: visible; }
         
-        /* 关键：被选中时，整个按钮旋转 90 度 */
         .menu-toggle:checked ~ .main-wrapper .menu-btn { 
             transform: rotate(90deg); 
         }
@@ -156,20 +166,23 @@
                 min-height: 100vh;
                 box-shadow: none;
                 border-radius: 0;
-                background: transparent;
-                border-right: 1px solid rgba(8, 141, 94, 0.15);
+                background: transparent; 
+                border-right: 2px solid #088D5E; 
                 width: auto;
                 white-space: nowrap;
-                padding: 24px 40px;
+                padding: 24px 0; /* 电脑端顶部也相应稍微靠上 */
             }
 
             .sidebar label {
                 font-size: 16px;
                 color: #4a5a4e;
+                padding: 12px 40px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             }
 
             .sidebar label:hover {
                 color: #088D5E;
+                background: rgba(0, 0, 0, 0.03);
             }
 
             .main-wrapper {
@@ -196,6 +209,7 @@
     <!-- 侧边栏 -->
     <div class="sidebar">
         <label for="menuToggle">首页</label>
+        <!-- 以后加内容直接在这里加 label 即可 -->
     </div>
 
     <!-- 右侧主内容区 -->
