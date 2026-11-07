@@ -96,6 +96,51 @@
             padding-top: 15px;
         }
 
+        .test-box {
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px dashed #aed581;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .test-box h3 {
+            margin-top: 0;
+            color: #43961c;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #aed581;
+            border-radius: 4px;
+            outline: none;
+            font-family: inherit;
+        }
+        .input-group button {
+            background-color: #43961c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .input-group button:hover {
+            background-color: #327513;
+        }
+        #msg-list {
+            padding-left: 20px;
+            margin: 0;
+        }
+        #msg-list li {
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -133,21 +178,75 @@
     <div class="content">
         <h1>Grassic-OS</h1>
         <h3>An independent, bare-metal operating system built from scratch.</h3>
-        
+
         <p><strong>1. Crafted by a solo developer.</strong><br>
         Designed and coded entirely by danhuangjar, stepping away from the comforts of existing operating systems to build something from the ground up.</p>
-        
+
         <p><strong>2. Free & Open Source.</strong><br>
         The kernel is fully open source. You can explore the raw code, track its development, and contribute to the project on GitHub.</p>
-        
+
         <p style="margin-top: 25px;">
             &rarr; <a href="https://github.com/danhuangjar/Grassic-OS" target="_blank">View Source Code on GitHub</a>
         </p>
+
+        <div class="test-box">
+            <h3>Backend Test: Message Board</h3>
+            <div class="input-group">
+                <input id="msg-input" type="text" placeholder="Type a message to save to DB...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+            <ul id="msg-list">
+                <li>Loading messages...</li>
+            </ul>
+        </div>
 
         <div class="footer">
             &copy; 2026 Grassic Studio.
         </div>
     </div>
 
+    <script>
+        async function loadMessages() {
+            try {
+                const res = await fetch('/api/messages');
+                const data = await res.json();
+                const list = document.getElementById('msg-list');
+                
+                if (data.list && data.list.length > 0) {
+                    list.innerHTML = data.list.map(item => `<li>${item.content}</li>`).join('');
+                } else {
+                    list.innerHTML = '<li>No messages yet. Be the first!</li>';
+                }
+            } catch (error) {
+                console.error("Error loading:", error);
+                document.getElementById('msg-list').innerHTML = '<li style="color:red;">Failed to load. Check console.</li>';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const content = input.value.trim();
+            if (!content) return;
+            
+            try {
+                const res = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: content })
+                });
+                
+                if (res.ok) {
+                    input.value = '';
+                    loadMessages();
+                } else {
+                    alert('Failed to send message');
+                }
+            } catch (error) {
+                console.error("Error sending:", error);
+            }
+        }
+
+        loadMessages();
+    </script>
 </body>
 </html>
