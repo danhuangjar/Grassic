@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grassic-OS | Independent OS Project</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; display: flex; }
-        .content, .sidebar { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; }
+        .content, .sidebar, .top-bar { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
+        /* 左侧固定侧边栏 */
         .sidebar {
-            width: 200px; 
+            width: 160px; 
             padding: 40px 15px;
             border-right: 2px solid #43961c; 
             box-sizing: border-box;
@@ -18,20 +19,64 @@
             justify-content: space-between;
             height: 100vh;
             position: fixed;
+            top: 0;
+            left: 0;
         }
 
         .brand-logo { width: 100px; height: auto; display: block; margin-bottom: 20px; }
-        .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 30px; }
+        .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; }
         .lang-link:hover { text-decoration: underline; }
 
-        /* 侧边栏按钮样式 */
-        .sidebar-auth button { padding: 8px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; width: 100%; margin-bottom: 10px; }
-        .sidebar-auth button:hover { background-color: #327513; }
-        .sidebar-auth .logout-btn { background-color: #d32f2f; }
-        .sidebar-auth .logout-btn:hover { background-color: #b71c1c; }
-        .user-info { font-size: 0.85rem; word-break: break-all; margin-bottom: 10px; }
+        /* 右上角顶栏 */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 40px 50px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 10;
+        }
 
-        .content { margin-left: 200px; padding: 40px 50px; max-width: 800px; box-sizing: border-box; }
+        /* 右上角按钮和文字样式 */
+        .auth-area button {
+            padding: 8px 16px;
+            background-color: #43961c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .auth-area button:hover { background-color: #327513; }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .user-info strong { color: #43961c; }
+        
+        .logout-btn {
+            background-color: #d32f2f !important;
+            padding: 6px 12px !important;
+            font-size: 0.85rem !important;
+        }
+        .logout-btn:hover { background-color: #b71c1c !important; }
+
+        /* 主内容区 */
+        .content { 
+            margin-left: 160px; 
+            padding: 100px 50px 40px 50px; /* 顶部留出空间给右上角按钮 */
+            max-width: 800px; 
+            box-sizing: border-box; 
+        }
+        
         h1 { color: #43961c; font-size: 2.8rem; margin-top: 0; margin-bottom: 10px; font-family: monospace; }
         h3 { font-size: 1.15rem; color: #555; font-weight: 400; margin-top: 0; margin-bottom: 30px; }
         p { margin-bottom: 15px; font-size: 1rem; }
@@ -46,37 +91,59 @@
         .input-group button { background-color: #43961c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         #msg-list { padding-left: 20px; margin: 0; }
 
+        /* 手机端适配（屏幕小于768px时） */
         @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 2px solid #43961c; padding: 15px 20px; flex-direction: row; align-items: center; justify-content: space-around; flex-wrap: wrap;}
-            .content { margin-left: 0; padding: 30px 20px; }
+            .sidebar { 
+                width: 100%; 
+                height: auto; 
+                position: relative; 
+                border-right: none; 
+                border-bottom: 2px solid #43961c; 
+                flex-direction: row; 
+                align-items: center; 
+                padding: 15px 20px;
+            }
             .brand-logo { width: 60px; margin-bottom: 0; }
-            .lang-link { margin-bottom: 0; }
-            .sidebar-auth { width: 120px;}
+            
+            .top-bar { 
+                position: relative; 
+                padding: 15px 20px; 
+                justify-content: center; 
+                background-color: rgba(255,255,255,0.3);
+                border-bottom: 1px solid #aed581;
+            }
+            .content { 
+                margin-left: 0; 
+                padding: 20px; 
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 左侧固定栏 -->
     <div class="sidebar">
-        <div>
-            <a href="/">         
-                <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
-            </a>
-            <a href="zh/" class="lang-link">中文版 &rarr;</a>
-        </div>
+        <a href="/">         
+            <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
+        </a>
+        <a href="zh/" class="lang-link">中文版 &rarr;</a>
+    </div>
 
-        <!-- 侧边栏：按钮区 -->
-        <div class="sidebar-auth">
+    <!-- 右上角浮动栏 -->
+    <div class="top-bar">
+        <div class="auth-area">
+            <!-- 未登录状态 -->
             <div id="auth-buttons">
                 <button onclick="window.location.href='/auth.html'">register/login</button>
             </div>
-            <div id="user-info" style="display: none;">
-                <div class="user-info">Hello,<br><strong id="user-email"></strong></div>
+            <!-- 已登录状态 -->
+            <div id="user-info" class="user-info" style="display: none;">
+                <span>Hello, <strong id="user-email"></strong></span>
                 <button class="logout-btn" onclick="signOut()">Log Out</button>
             </div>
         </div>
     </div>
 
+    <!-- 主内容区 -->
     <div class="content">
         <h1>Grassic-OS</h1>
         <h3>An independent, bare-metal operating system built from scratch.</h3>
@@ -108,6 +175,7 @@
         </div>
     </div>
 
+    <!-- 逻辑代码 -->
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
         
@@ -121,12 +189,12 @@
             checkUser()
         }
 
-        // 检查状态（如果登录过，显示 Log Out）
+        // 检查登录状态
         async function checkUser() {
             const { data: { session } } = await supabase.auth.getSession()
             if (session) {
                 document.getElementById('auth-buttons').style.display = 'none'
-                document.getElementById('user-info').style.display = 'block'
+                document.getElementById('user-info').style.display = 'flex'
                 document.getElementById('user-email').textContent = session.user.email
             } else {
                 document.getElementById('auth-buttons').style.display = 'block'
