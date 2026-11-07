@@ -141,7 +141,7 @@
             margin-bottom: 5px;
             word-break: break-all;
         }
-        
+
         /* 账号区特有样式 */
         .auth-btn { background-color: #555 !important; margin-left: 10px;}
         .auth-btn:hover { background-color: #333 !important; }
@@ -199,7 +199,7 @@
         <!-- ======== 账号登录注册区 ======== -->
         <div class="test-box" style="border-color: #43961c; border-style: solid;">
             <h3>User Authentication</h3>
-            
+
             <!-- 未登录时显示 -->
             <div id="auth-form">
                 <div class="input-group" style="flex-direction: column;">
@@ -237,11 +237,11 @@
     <!-- 引入 Supabase 库 -->
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-        
-        // ⚠️ 这里替换成你的 Supabase 信息！
-        const supabaseUrl = 'eilhhwsbawpvfjmtjwbi' 
+
+        // 你的 Supabase 完整信息
+        const supabaseUrl = 'https://eilhhwsbawpvfjmtjwbi.supabase.co' 
         const supabaseKey = 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn' 
-        
+
         const supabase = createClient(supabaseUrl, supabaseKey)
 
         // ========== 账号逻辑 ==========
@@ -286,7 +286,7 @@
                 const res = await fetch('/api/messages');
                 const data = await res.json();
                 const list = document.getElementById('msg-list');
-                
+
                 if (data.list && data.list.length > 0) {
                     list.innerHTML = data.list.map(item => `<li>${item.content}</li>`).join('');
                 } else {
@@ -302,14 +302,14 @@
             const input = document.getElementById('msg-input');
             const content = input.value.trim();
             if (!content) return;
-            
+
             try {
                 const res = await fetch('/api/messages', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content: content })
                 });
-                
+
                 if (res.ok) {
                     input.value = '';
                     loadMessages();
