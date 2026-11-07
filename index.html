@@ -24,13 +24,10 @@
         .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 30px; }
         .lang-link:hover { text-decoration: underline; }
 
-        /* 侧边栏登录框样式 */
-        .sidebar-auth input { width: 100%; padding: 6px; border: 1px solid #aed581; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; outline: none; }
-        .sidebar-auth button { padding: 6px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+        /* 侧边栏按钮样式 */
+        .sidebar-auth button { padding: 8px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; width: 100%; margin-bottom: 10px; }
         .sidebar-auth button:hover { background-color: #327513; }
-        .sidebar-auth .register-btn { background-color: #555; }
-        .sidebar-auth .register-btn:hover { background-color: #333; }
-        .sidebar-auth .logout-btn { background-color: #d32f2f; width: 100%; }
+        .sidebar-auth .logout-btn { background-color: #d32f2f; }
         .sidebar-auth .logout-btn:hover { background-color: #b71c1c; }
         .user-info { font-size: 0.85rem; word-break: break-all; margin-bottom: 10px; }
 
@@ -55,9 +52,7 @@
             .content { margin-left: 0; padding: 30px 20px; }
             .brand-logo { width: 60px; margin-bottom: 0; }
             .lang-link { margin-bottom: 0; }
-            .sidebar-auth { display: flex; gap: 10px; align-items: center;}
-            .sidebar-auth input { width: 120px; margin-bottom: 0; }
-            .sidebar-auth button { width: auto; }
+            .sidebar-auth { width: 120px;}
         }
     </style>
 </head>
@@ -70,15 +65,10 @@
             <a href="zh/" class="lang-link">中文版 &rarr;</a>
         </div>
 
-        <!-- 侧边栏登录区 -->
+        <!-- 侧边栏：按钮区 -->
         <div class="sidebar-auth">
-            <div id="auth-form" style="display: flex; flex-direction: column; gap: 8px;">
-                <input id="email-input" type="email" placeholder="Email">
-                <input id="password-input" type="password" placeholder="Password">
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="signIn()" style="flex: 1;">Login</button>
-                    <button class="register-btn" onclick="window.location.href='/register.html'" style="flex: 1;">Register</button>
-                </div>
+            <div id="auth-buttons">
+                <button onclick="window.location.href='/auth.html'">register/login</button>
             </div>
             <div id="user-info" style="display: none;">
                 <div class="user-info">Hello,<br><strong id="user-email"></strong></div>
@@ -125,28 +115,21 @@
         const supabaseKey = 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn' 
         const supabase = createClient(supabaseUrl, supabaseKey)
 
-        // 账号逻辑
-        window.signIn = async () => {
-            const email = document.getElementById('email-input').value
-            const password = document.getElementById('password-input').value
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-            if (error) alert('Login Failed: ' + error.message)
-            else checkUser()
-        }
-
+        // 登出逻辑
         window.signOut = async () => {
             await supabase.auth.signOut()
             checkUser()
         }
 
+        // 检查状态（如果登录过，显示 Log Out）
         async function checkUser() {
             const { data: { session } } = await supabase.auth.getSession()
             if (session) {
-                document.getElementById('auth-form').style.display = 'none'
+                document.getElementById('auth-buttons').style.display = 'none'
                 document.getElementById('user-info').style.display = 'block'
                 document.getElementById('user-email').textContent = session.user.email
             } else {
-                document.getElementById('auth-form').style.display = 'flex'
+                document.getElementById('auth-buttons').style.display = 'block'
                 document.getElementById('user-info').style.display = 'none'
             }
         }
