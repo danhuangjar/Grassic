@@ -6,10 +6,9 @@
     <title>Grassic-OS | Independent OS Project</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; }
-        .content, .sidebar, .top-bar, .mobile-header { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .content, .sidebar, .top-bar, .mobile-header, .mobile-menu { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
-        /* ========== 电脑端布局 ========== */
-        /* 左侧固定侧边栏 */
+        /* ========== 1. 电脑端侧边栏（原封不动恢复你的代码） ========== */
         .sidebar {
             width: 160px; 
             padding: 40px 15px;
@@ -24,11 +23,23 @@
             left: 0;
         }
 
-        .brand-logo { width: 100px; height: auto; display: block; margin-bottom: 20px; }
-        .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; font-weight: bold; }
-        .lang-link:hover { text-decoration: underline; }
+        .brand-logo {
+            width: 100px;
+            height: auto;
+            display: block;
+        }
 
-        /* 右上角顶栏 (PC端) */
+        .lang-link {
+            color: #43961c;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .lang-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== 2. 电脑端右上角浮动按钮 ========== */
         .top-bar {
             position: fixed;
             top: 0;
@@ -41,10 +52,7 @@
             z-index: 10;
         }
 
-        /* 手机端顶部导航条 (默认隐藏) */
-        .mobile-header { display: none; }
-
-        /* 按钮通用样式 */
+        /* ========== 3. 通用按钮样式 ========== */
         .auth-area button {
             padding: 8px 16px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
         }
@@ -55,9 +63,12 @@
         .logout-btn { background-color: #d32f2f !important; padding: 6px 12px !important; font-size: 0.85rem !important; }
         .logout-btn:hover { background-color: #b71c1c !important; }
 
-        /* 主内容区 */
+        /* ========== 4. 正文内容区 ========== */
         .content { 
-            margin-left: 160px; padding: 100px 50px 40px 50px; max-width: 800px; box-sizing: border-box; 
+            margin-left: 160px; 
+            padding: 40px 50px; /* 恢复最初的内边距 */
+            max-width: 800px; 
+            box-sizing: border-box; 
         }
         h1 { color: #43961c; font-size: 2.8rem; margin-top: 0; margin-bottom: 10px; font-family: monospace; }
         h3 { font-size: 1.15rem; color: #555; font-weight: 400; margin-top: 0; margin-bottom: 30px; }
@@ -73,12 +84,15 @@
         .input-group button { background-color: #43961c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         #msg-list { padding-left: 20px; margin: 0; }
 
-        /* ========== 手机端适配（核心代码） ========== */
+        /* ========== 5. 手机端专属导航（默认隐藏，不影响电脑） ========== */
+        .mobile-header, .mobile-menu { display: none; }
+
+        /* ========== 6. 手机端适配（小于768px） ========== */
         @media (max-width: 768px) {
-            /* 1. 隐藏 PC 端的侧边栏和右上角按钮 */
+            /* 隐藏电脑端的侧边栏和右上角按钮 */
             .sidebar, .top-bar { display: none; }
 
-            /* 2. 显示手机端顶部导航条 */
+            /* 显示手机端顶部条 */
             .mobile-header {
                 display: flex;
                 justify-content: space-between;
@@ -91,33 +105,37 @@
                 z-index: 100;
             }
             .mobile-header .title { font-size: 1.2rem; font-weight: bold; color: #43961c; font-family: monospace; }
-            .menu-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #43961c; padding: 0; }
+            .menu-btn { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #43961c; padding: 0; line-height: 1; }
 
-            /* 3. 手机端下拉菜单区（默认隐藏） */
+            /* 手机端菜单区（默认收起） */
             .mobile-menu {
-                display: none; /* 默认隐藏 */
+                display: none; 
                 flex-direction: column;
                 background-color: #dcedc8;
                 padding: 20px;
                 border-bottom: 2px solid #43961c;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             }
-            .mobile-menu.active { display: flex; } /* 激活时显示 */
+            .mobile-menu.active { display: flex; } 
             
-            .mobile-menu .brand-logo { width: 100px; margin-bottom: 15px; }
-            .mobile-menu .lang-link { margin-bottom: 20px; }
+            /* 手机端菜单里的 Logo 图片和链接 */
+            .mobile-menu .brand-logo { width: 80px; margin-bottom: 20px; }
+            .mobile-menu .lang-link { margin-bottom: 20px; display: block; font-size: 1rem;}
             .mobile-menu .auth-area button { width: 100%; padding: 12px; font-size: 1rem; }
             .mobile-menu .auth-area .user-info { flex-direction: column; gap: 10px; align-items: flex-start; }
 
-            /* 4. 调整主内容区 */
-            .content { margin-left: 0; padding: 20px; }
+            /* 手机端正文区调整 */
+            .content { 
+                margin-left: 0; 
+                padding: 30px 20px; 
+            }
             h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ====== 手机端顶部导航 & 菜单 ====== -->
+    <!-- ====== 手机端专属：顶部导航条 & 下拉菜单 ====== -->
     <div class="mobile-header">
         <div class="title">Grassic-OS</div>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -129,7 +147,6 @@
         </a>
         <a href="zh/" class="lang-link">中文版 &rarr;</a>
         
-        <!-- 菜单里的登录按钮区 -->
         <div class="auth-area">
             <div id="mobile-auth-buttons">
                 <button onclick="window.location.href='/auth.html'">register/login</button>
@@ -141,16 +158,17 @@
         </div>
     </div>
 
-    <!-- ====== 电脑端布局 ====== -->
+    <!-- ====== 电脑端专属：左侧边栏（你的图片 Logo 就在这里） ====== -->
     <div class="sidebar">
-        <div>
-            <a href="/">         
-                <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
-            </a>
+        <a href="/">         
+            <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
+        </a>
+        <div class="lang-switch">
             <a href="zh/" class="lang-link">中文版 &rarr;</a>
         </div>
     </div>
 
+    <!-- ====== 电脑端专属：右上角按钮 ====== -->
     <div class="top-bar">
         <div class="auth-area">
             <div id="pc-auth-buttons">
@@ -202,10 +220,9 @@
         const supabaseKey = 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn' 
         const supabase = createClient(supabaseUrl, supabaseKey)
 
-        // 手机端菜单切换逻辑
+        // 手机端菜单展开/收起
         window.toggleMenu = function() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
+            document.getElementById('mobileMenu').classList.toggle('active');
         }
 
         // 登出逻辑
@@ -214,24 +231,24 @@
             checkUser()
         }
 
-        // 统一检查登录状态（同时更新 PC 端和手机端的 UI）
+        // 统一状态更新（PC端和手机端同步）
         async function checkUser() {
             const { data: { session } } = await supabase.auth.getSession()
             
             if (session) {
-                // PC 端
+                // PC端显示
                 document.getElementById('pc-auth-buttons').style.display = 'none'
                 document.getElementById('pc-user-info').style.display = 'flex'
                 document.getElementById('pc-user-email').textContent = session.user.email
-                // 手机端
+
+                // 手机端显示
                 document.getElementById('mobile-auth-buttons').style.display = 'none'
                 document.getElementById('mobile-user-info').style.display = 'flex'
                 document.getElementById('mobile-user-email').textContent = session.user.email
             } else {
-                // PC 端
                 document.getElementById('pc-auth-buttons').style.display = 'block'
                 document.getElementById('pc-user-info').style.display = 'none'
-                // 手机端
+
                 document.getElementById('mobile-auth-buttons').style.display = 'block'
                 document.getElementById('mobile-user-info').style.display = 'none'
             }
