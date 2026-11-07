@@ -6,8 +6,9 @@
     <title>Grassic-OS | Independent OS Project</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; }
-        .content, .sidebar, .top-bar { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .content, .sidebar, .top-bar, .mobile-header { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
+        /* ========== 电脑端布局 ========== */
         /* 左侧固定侧边栏 */
         .sidebar {
             width: 160px; 
@@ -24,10 +25,10 @@
         }
 
         .brand-logo { width: 100px; height: auto; display: block; margin-bottom: 20px; }
-        .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; }
+        .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; font-weight: bold; }
         .lang-link:hover { text-decoration: underline; }
 
-        /* 右上角顶栏 */
+        /* 右上角顶栏 (PC端) */
         .top-bar {
             position: fixed;
             top: 0;
@@ -40,48 +41,29 @@
             z-index: 10;
         }
 
-        /* 右上角按钮和文字样式 */
+        /* 手机端顶部导航条 (默认隐藏) */
+        .mobile-header { display: none; }
+
+        /* 按钮通用样式 */
         .auth-area button {
-            padding: 8px 16px;
-            background-color: #43961c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
+            padding: 8px 16px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
         }
         .auth-area button:hover { background-color: #327513; }
         
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 0.9rem;
-            color: #555;
-        }
+        .user-info { display: flex; align-items: center; gap: 15px; font-size: 0.9rem; color: #555; }
         .user-info strong { color: #43961c; }
-        
-        .logout-btn {
-            background-color: #d32f2f !important;
-            padding: 6px 12px !important;
-            font-size: 0.85rem !important;
-        }
+        .logout-btn { background-color: #d32f2f !important; padding: 6px 12px !important; font-size: 0.85rem !important; }
         .logout-btn:hover { background-color: #b71c1c !important; }
 
         /* 主内容区 */
         .content { 
-            margin-left: 160px; 
-            padding: 100px 50px 40px 50px; /* 顶部留出空间给右上角按钮 */
-            max-width: 800px; 
-            box-sizing: border-box; 
+            margin-left: 160px; padding: 100px 50px 40px 50px; max-width: 800px; box-sizing: border-box; 
         }
-        
         h1 { color: #43961c; font-size: 2.8rem; margin-top: 0; margin-bottom: 10px; font-family: monospace; }
         h3 { font-size: 1.15rem; color: #555; font-weight: 400; margin-top: 0; margin-bottom: 30px; }
         p { margin-bottom: 15px; font-size: 1rem; }
-        a { color: #43961c; font-weight: 600; text-decoration: none; border-bottom: 1px dashed #43961c; }
-        a:hover { background-color: #c5e1a5; }
+        a.main-link { color: #43961c; font-weight: 600; text-decoration: none; border-bottom: 1px dashed #43961c; }
+        a.main-link:hover { background-color: #c5e1a5; }
         .footer { margin-top: 50px; font-size: 0.85rem; color: #666; border-top: 1px solid #aed581; padding-top: 15px; }
 
         /* 留言板样式 */
@@ -91,59 +73,97 @@
         .input-group button { background-color: #43961c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         #msg-list { padding-left: 20px; margin: 0; }
 
-        /* 手机端适配（屏幕小于768px时） */
+        /* ========== 手机端适配（核心代码） ========== */
         @media (max-width: 768px) {
-            .sidebar { 
-                width: 100%; 
-                height: auto; 
-                position: relative; 
-                border-right: none; 
-                border-bottom: 2px solid #43961c; 
-                flex-direction: row; 
-                align-items: center; 
+            /* 1. 隐藏 PC 端的侧边栏和右上角按钮 */
+            .sidebar, .top-bar { display: none; }
+
+            /* 2. 显示手机端顶部导航条 */
+            .mobile-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #dcedc8;
+                border-bottom: 2px solid #43961c;
                 padding: 15px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
             }
-            .brand-logo { width: 60px; margin-bottom: 0; }
+            .mobile-header .title { font-size: 1.2rem; font-weight: bold; color: #43961c; font-family: monospace; }
+            .menu-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #43961c; padding: 0; }
+
+            /* 3. 手机端下拉菜单区（默认隐藏） */
+            .mobile-menu {
+                display: none; /* 默认隐藏 */
+                flex-direction: column;
+                background-color: #dcedc8;
+                padding: 20px;
+                border-bottom: 2px solid #43961c;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            }
+            .mobile-menu.active { display: flex; } /* 激活时显示 */
             
-            .top-bar { 
-                position: relative; 
-                padding: 15px 20px; 
-                justify-content: center; 
-                background-color: rgba(255,255,255,0.3);
-                border-bottom: 1px solid #aed581;
-            }
-            .content { 
-                margin-left: 0; 
-                padding: 20px; 
-            }
+            .mobile-menu .brand-logo { width: 100px; margin-bottom: 15px; }
+            .mobile-menu .lang-link { margin-bottom: 20px; }
+            .mobile-menu .auth-area button { width: 100%; padding: 12px; font-size: 1rem; }
+            .mobile-menu .auth-area .user-info { flex-direction: column; gap: 10px; align-items: flex-start; }
+
+            /* 4. 调整主内容区 */
+            .content { margin-left: 0; padding: 20px; }
+            h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 左侧固定栏 -->
-    <div class="sidebar">
+
+    <!-- ====== 手机端顶部导航 & 菜单 ====== -->
+    <div class="mobile-header">
+        <div class="title">Grassic-OS</div>
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
         <a href="/">         
             <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
         </a>
         <a href="zh/" class="lang-link">中文版 &rarr;</a>
-    </div>
-
-    <!-- 右上角浮动栏 -->
-    <div class="top-bar">
+        
+        <!-- 菜单里的登录按钮区 -->
         <div class="auth-area">
-            <!-- 未登录状态 -->
-            <div id="auth-buttons">
+            <div id="mobile-auth-buttons">
                 <button onclick="window.location.href='/auth.html'">register/login</button>
             </div>
-            <!-- 已登录状态 -->
-            <div id="user-info" class="user-info" style="display: none;">
-                <span>Hello, <strong id="user-email"></strong></span>
+            <div id="mobile-user-info" class="user-info" style="display: none;">
+                <span>Hello, <strong id="mobile-user-email"></strong></span>
                 <button class="logout-btn" onclick="signOut()">Log Out</button>
             </div>
         </div>
     </div>
 
-    <!-- 主内容区 -->
+    <!-- ====== 电脑端布局 ====== -->
+    <div class="sidebar">
+        <div>
+            <a href="/">         
+                <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
+            </a>
+            <a href="zh/" class="lang-link">中文版 &rarr;</a>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div class="auth-area">
+            <div id="pc-auth-buttons">
+                <button onclick="window.location.href='/auth.html'">register/login</button>
+            </div>
+            <div id="pc-user-info" class="user-info" style="display: none;">
+                <span>Hello, <strong id="pc-user-email"></strong></span>
+                <button class="logout-btn" onclick="signOut()">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 主内容区 ====== -->
     <div class="content">
         <h1>Grassic-OS</h1>
         <h3>An independent, bare-metal operating system built from scratch.</h3>
@@ -155,10 +175,9 @@
         The kernel is fully open source. You can explore the raw code, track its development, and contribute to the project on GitHub.</p>
 
         <p style="margin-top: 25px;">
-            &rarr; <a href="https://github.com/danhuangjar/Grassic-OS" target="_blank">View Source Code on GitHub</a>
+            &rarr; <a href="https://github.com/danhuangjar/Grassic-OS" class="main-link" target="_blank">View Source Code on GitHub</a>
         </p>
 
-        <!-- 留言板 -->
         <div class="test-box">
             <h3>Message Board</h3>
             <div class="input-group">
@@ -175,7 +194,7 @@
         </div>
     </div>
 
-    <!-- 逻辑代码 -->
+    <!-- ====== 逻辑代码 ====== -->
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
         
@@ -183,22 +202,38 @@
         const supabaseKey = 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn' 
         const supabase = createClient(supabaseUrl, supabaseKey)
 
+        // 手机端菜单切换逻辑
+        window.toggleMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+
         // 登出逻辑
         window.signOut = async () => {
             await supabase.auth.signOut()
             checkUser()
         }
 
-        // 检查登录状态
+        // 统一检查登录状态（同时更新 PC 端和手机端的 UI）
         async function checkUser() {
             const { data: { session } } = await supabase.auth.getSession()
+            
             if (session) {
-                document.getElementById('auth-buttons').style.display = 'none'
-                document.getElementById('user-info').style.display = 'flex'
-                document.getElementById('user-email').textContent = session.user.email
+                // PC 端
+                document.getElementById('pc-auth-buttons').style.display = 'none'
+                document.getElementById('pc-user-info').style.display = 'flex'
+                document.getElementById('pc-user-email').textContent = session.user.email
+                // 手机端
+                document.getElementById('mobile-auth-buttons').style.display = 'none'
+                document.getElementById('mobile-user-info').style.display = 'flex'
+                document.getElementById('mobile-user-email').textContent = session.user.email
             } else {
-                document.getElementById('auth-buttons').style.display = 'block'
-                document.getElementById('user-info').style.display = 'none'
+                // PC 端
+                document.getElementById('pc-auth-buttons').style.display = 'block'
+                document.getElementById('pc-user-info').style.display = 'none'
+                // 手机端
+                document.getElementById('mobile-auth-buttons').style.display = 'block'
+                document.getElementById('mobile-user-info').style.display = 'none'
             }
         }
         checkUser()
