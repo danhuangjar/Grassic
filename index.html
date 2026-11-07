@@ -121,10 +121,30 @@
     </style>
 </head>
 <body>
+    <!-- 这里是准备用来显示后端文字的框 -->
+<div id="backend-out" style="padding: 20px; background: #eee; margin-top: 20px;">
+  正在连接后端...
+</div>
+
+<!-- 下面是前端请求后端的代码 -->
+<script>
+  // 1. 前端向刚刚跑通的接口发起请求
+  fetch('/api/hello')
+    // 2. 把后端返回的数据转换成前端能看懂的 JSON 格式
+    .then(res => res.json())
+    // 3. 拿到数据后，把文字塞进上面的 div 里
+    .then(data => {
+      document.getElementById('backend-out').textContent = '后端对我说：' + data.msg;
+    })
+    .catch(err => {
+      document.getElementById('backend-out').textContent = '连不上后端，报错了';
+      console.error(err);
+    });
+</script>
+
 
     <div class="sidebar">
-        <a href="/">
-            <!-- 引用根目录的 logo.svg -->
+        <a href="/">         
             <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
         </a>
         <div class="lang-switch">
