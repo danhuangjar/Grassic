@@ -6,9 +6,8 @@
     <title>Grassic-OS | Independent OS Project</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; }
-        .content, .sidebar, .top-bar, .mobile-header, .mobile-menu { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .content, .sidebar, .mobile-header, .mobile-menu { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
-        /* ========== 1. 电脑端侧边栏（原封不动） ========== */
         .sidebar {
             width: 160px; 
             padding: 40px 15px;
@@ -23,38 +22,32 @@
             left: 0;
         }
 
-        .brand-logo {
-            width: 100px;
-            height: auto;
-            display: block;
+        .brand-logo { width: 100px; height: auto; display: block; }
+        .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block;}
+        .lang-link:hover { text-decoration: underline; }
+
+        .content { 
+            margin-left: 160px; 
+            padding: 40px 50px; 
+            max-width: 800px; 
+            box-sizing: border-box; 
         }
 
-        .lang-link {
-            color: #43961c;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .lang-link:hover {
-            text-decoration: underline;
-        }
-
-        /* ========== 2. 电脑端右上角浮动按钮 ========== */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            padding: 40px 50px;
+        .desktop-auth-bar {
             display: flex;
             justify-content: flex-end;
-            align-items: center;
-            box-sizing: border-box;
-            z-index: 10;
+            margin-bottom: 20px;
         }
 
-        /* ========== 3. 通用按钮样式 ========== */
+        h1 { color: #43961c; font-size: 2.8rem; margin-top: 0; margin-bottom: 10px; font-family: monospace; }
+        h3 { font-size: 1.15rem; color: #555; font-weight: 400; margin-top: 0; margin-bottom: 30px; }
+        p { margin-bottom: 15px; font-size: 1rem; }
+        a.main-link { color: #43961c; font-weight: 600; text-decoration: none; border-bottom: 1px dashed #43961c; }
+        a.main-link:hover { background-color: #c5e1a5; }
+        .footer { margin-top: 50px; font-size: 0.85rem; color: #666; border-top: 1px solid #aed581; padding-top: 15px; }
+
         .auth-area button {
-            padding: 8px 16px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+            padding: 8px 16px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: 0.2s;
         }
         .auth-area button:hover { background-color: #327513; }
         
@@ -63,57 +56,46 @@
         .logout-btn { background-color: #d32f2f !important; padding: 6px 12px !important; font-size: 0.85rem !important; }
         .logout-btn:hover { background-color: #b71c1c !important; }
 
-        /* ========== 4. 正文内容区 ========== */
-        .content { 
-            margin-left: 160px; 
-            padding: 40px 50px; 
-            max-width: 800px; 
-            box-sizing: border-box; 
-        }
-        h1 { color: #43961c; font-size: 2.8rem; margin-top: 0; margin-bottom: 10px; font-family: monospace; }
-        h3 { font-size: 1.15rem; color: #555; font-weight: 400; margin-top: 0; margin-bottom: 30px; }
-        p { margin-bottom: 15px; font-size: 1rem; }
-        a.main-link { color: #43961c; font-weight: 600; text-decoration: none; border-bottom: 1px dashed #43961c; }
-        a.main-link:hover { background-color: #c5e1a5; }
-        .footer { margin-top: 50px; font-size: 0.85rem; color: #666; border-top: 1px solid #aed581; padding-top: 15px; }
-
-        /* 留言板样式 */
         .test-box { margin-top: 30px; padding: 20px; border: 2px dashed #aed581; border-radius: 8px; background-color: rgba(255, 255, 255, 0.4); }
         .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
         .input-group input { flex: 1; padding: 8px; border: 1px solid #aed581; border-radius: 4px; }
         .input-group button { background-color: #43961c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         #msg-list { padding-left: 20px; margin: 0; }
 
-        /* ========== 5. 手机端专属导航（默认隐藏） ========== */
         .mobile-header, .mobile-menu { display: none; }
 
-        /* ========== 6. 手机端适配 ========== */
         @media (max-width: 768px) {
-            .sidebar, .top-bar { display: none; }
+            .sidebar, .desktop-auth-bar { display: none; }
 
-            /* 手机端顶部条：左边是图片 LOGO，右边是菜单按钮 */
             .mobile-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 background-color: #dcedc8;
                 border-bottom: 2px solid #43961c;
-                padding: 10px 20px; /* 稍微减小 padding 适应图片 */
+                padding: 0 20px; 
+                height: 60px;
                 position: sticky;
                 top: 0;
                 z-index: 100;
             }
             
-            /* 顶部栏里的图片 LOGO 尺寸 */
+            .logo-container {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                overflow: hidden; 
+                width: 130px; 
+            }
+
             .mobile-header-logo {
-                width: 60px;
+                width: 100px; 
                 height: auto;
                 display: block;
             }
             
-            .menu-btn { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #43961c; padding: 0; line-height: 1; }
+            .menu-btn { background: none; border: none; font-size: 2rem; cursor: pointer; color: #43961c; padding: 0; line-height: 1; }
 
-            /* 手机端下拉菜单 */
             .mobile-menu {
                 display: none; 
                 flex-direction: column;
@@ -124,22 +106,19 @@
             }
             .mobile-menu.active { display: flex; } 
             
-            /* 菜单里的中文链接和登录按钮 */
             .mobile-menu .lang-link { margin-bottom: 20px; display: block; font-size: 1rem;}
             .mobile-menu .auth-area button { width: 100%; padding: 12px; font-size: 1rem; }
             .mobile-menu .auth-area .user-info { flex-direction: column; gap: 10px; align-items: flex-start; }
 
-            .content { margin-left: 0; padding: 30px 20px; }
+            .content { margin-left: 0; padding: 20px; }
             h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ====== 手机端专属结构 ====== -->
     <div class="mobile-header">
-        <!-- 这里换成了图片 LOGO -->
-        <a href="/">
+        <a href="/" class="logo-container">
             <img src="logo.jpg" alt="Grassic Logo" class="mobile-header-logo">
         </a>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -159,7 +138,6 @@
         </div>
     </div>
 
-    <!-- ====== 电脑端专属结构（完全不变） ====== -->
     <div class="sidebar">
         <a href="/">         
             <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
@@ -169,20 +147,20 @@
         </div>
     </div>
 
-    <div class="top-bar">
-        <div class="auth-area">
-            <div id="pc-auth-buttons">
-                <button onclick="window.location.href='/auth.html'">register/login</button>
-            </div>
-            <div id="pc-user-info" class="user-info" style="display: none;">
-                <span>Hello, <strong id="pc-user-email"></strong></span>
-                <button class="logout-btn" onclick="signOut()">Log Out</button>
+    <div class="content">
+        
+        <div class="desktop-auth-bar">
+            <div class="auth-area">
+                <div id="pc-auth-buttons">
+                    <button onclick="window.location.href='/auth.html'">register/login</button>
+                </div>
+                <div id="pc-user-info" class="user-info" style="display: none;">
+                    <span>Hello, <strong id="pc-user-email"></strong></span>
+                    <button class="logout-btn" onclick="signOut()">Log Out</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ====== 主内容区 ====== -->
-    <div class="content">
         <h1>Grassic-OS</h1>
         <h3>An independent, bare-metal operating system built from scratch.</h3>
 
@@ -212,7 +190,6 @@
         </div>
     </div>
 
-    <!-- ====== 逻辑代码 ====== -->
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
         
