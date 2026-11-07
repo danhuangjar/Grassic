@@ -8,7 +8,7 @@
         body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; }
         .content, .sidebar, .top-bar, .mobile-header, .mobile-menu { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
-        /* ========== 1. 电脑端侧边栏（原封不动恢复你的代码） ========== */
+        /* ========== 1. 电脑端侧边栏（原封不动） ========== */
         .sidebar {
             width: 160px; 
             padding: 40px 15px;
@@ -66,7 +66,7 @@
         /* ========== 4. 正文内容区 ========== */
         .content { 
             margin-left: 160px; 
-            padding: 40px 50px; /* 恢复最初的内边距 */
+            padding: 40px 50px; 
             max-width: 800px; 
             box-sizing: border-box; 
         }
@@ -84,30 +84,36 @@
         .input-group button { background-color: #43961c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
         #msg-list { padding-left: 20px; margin: 0; }
 
-        /* ========== 5. 手机端专属导航（默认隐藏，不影响电脑） ========== */
+        /* ========== 5. 手机端专属导航（默认隐藏） ========== */
         .mobile-header, .mobile-menu { display: none; }
 
-        /* ========== 6. 手机端适配（小于768px） ========== */
+        /* ========== 6. 手机端适配 ========== */
         @media (max-width: 768px) {
-            /* 隐藏电脑端的侧边栏和右上角按钮 */
             .sidebar, .top-bar { display: none; }
 
-            /* 显示手机端顶部条 */
+            /* 手机端顶部条：左边是图片 LOGO，右边是菜单按钮 */
             .mobile-header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 background-color: #dcedc8;
                 border-bottom: 2px solid #43961c;
-                padding: 15px 20px;
+                padding: 10px 20px; /* 稍微减小 padding 适应图片 */
                 position: sticky;
                 top: 0;
                 z-index: 100;
             }
-            .mobile-header .title { font-size: 1.2rem; font-weight: bold; color: #43961c; font-family: monospace; }
+            
+            /* 顶部栏里的图片 LOGO 尺寸 */
+            .mobile-header-logo {
+                width: 60px;
+                height: auto;
+                display: block;
+            }
+            
             .menu-btn { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #43961c; padding: 0; line-height: 1; }
 
-            /* 手机端菜单区（默认收起） */
+            /* 手机端下拉菜单 */
             .mobile-menu {
                 display: none; 
                 flex-direction: column;
@@ -118,33 +124,28 @@
             }
             .mobile-menu.active { display: flex; } 
             
-            /* 手机端菜单里的 Logo 图片和链接 */
-            .mobile-menu .brand-logo { width: 80px; margin-bottom: 20px; }
+            /* 菜单里的中文链接和登录按钮 */
             .mobile-menu .lang-link { margin-bottom: 20px; display: block; font-size: 1rem;}
             .mobile-menu .auth-area button { width: 100%; padding: 12px; font-size: 1rem; }
             .mobile-menu .auth-area .user-info { flex-direction: column; gap: 10px; align-items: flex-start; }
 
-            /* 手机端正文区调整 */
-            .content { 
-                margin-left: 0; 
-                padding: 30px 20px; 
-            }
+            .content { margin-left: 0; padding: 30px 20px; }
             h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ====== 手机端专属：顶部导航条 & 下拉菜单 ====== -->
+    <!-- ====== 手机端专属结构 ====== -->
     <div class="mobile-header">
-        <div class="title">Grassic-OS</div>
+        <!-- 这里换成了图片 LOGO -->
+        <a href="/">
+            <img src="logo.jpg" alt="Grassic Logo" class="mobile-header-logo">
+        </a>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
 
     <div class="mobile-menu" id="mobileMenu">
-        <a href="/">         
-            <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
-        </a>
         <a href="zh/" class="lang-link">中文版 &rarr;</a>
         
         <div class="auth-area">
@@ -158,7 +159,7 @@
         </div>
     </div>
 
-    <!-- ====== 电脑端专属：左侧边栏（你的图片 Logo 就在这里） ====== -->
+    <!-- ====== 电脑端专属结构（完全不变） ====== -->
     <div class="sidebar">
         <a href="/">         
             <img src="logo.jpg" alt="Grassic Logo" class="brand-logo">
@@ -168,7 +169,6 @@
         </div>
     </div>
 
-    <!-- ====== 电脑端专属：右上角按钮 ====== -->
     <div class="top-bar">
         <div class="auth-area">
             <div id="pc-auth-buttons">
@@ -220,28 +220,23 @@
         const supabaseKey = 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn' 
         const supabase = createClient(supabaseUrl, supabaseKey)
 
-        // 手机端菜单展开/收起
         window.toggleMenu = function() {
             document.getElementById('mobileMenu').classList.toggle('active');
         }
 
-        // 登出逻辑
         window.signOut = async () => {
             await supabase.auth.signOut()
             checkUser()
         }
 
-        // 统一状态更新（PC端和手机端同步）
         async function checkUser() {
             const { data: { session } } = await supabase.auth.getSession()
             
             if (session) {
-                // PC端显示
                 document.getElementById('pc-auth-buttons').style.display = 'none'
                 document.getElementById('pc-user-info').style.display = 'flex'
                 document.getElementById('pc-user-email').textContent = session.user.email
 
-                // 手机端显示
                 document.getElementById('mobile-auth-buttons').style.display = 'none'
                 document.getElementById('mobile-user-info').style.display = 'flex'
                 document.getElementById('mobile-user-email').textContent = session.user.email
@@ -255,7 +250,6 @@
         }
         checkUser()
 
-        // 留言板逻辑
         window.loadMessages = async function() {
             try {
                 const res = await fetch('/api/messages');
