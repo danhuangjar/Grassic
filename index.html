@@ -96,8 +96,9 @@
             padding-top: 15px;
         }
 
+        /* 账号和留言板测试区通用样式 */
         .test-box {
-            margin-top: 40px;
+            margin-top: 30px;
             padding: 20px;
             border: 2px dashed #aed581;
             border-radius: 8px;
@@ -140,6 +141,12 @@
             margin-bottom: 5px;
             word-break: break-all;
         }
+        
+        /* 账号区特有样式 */
+        .auth-btn { background-color: #555 !important; margin-left: 10px;}
+        .auth-btn:hover { background-color: #333 !important; }
+        .logout-btn { background-color: #d32f2f !important; }
+        .logout-btn:hover { background-color: #b71c1c !important; }
 
         @media (max-width: 768px) {
             body {
@@ -189,6 +196,28 @@
             &rarr; <a href="https://github.com/danhuangjar/Grassic-OS" target="_blank">View Source Code on GitHub</a>
         </p>
 
+        <!-- ======== 账号登录注册区 ======== -->
+        <div class="test-box" style="border-color: #43961c; border-style: solid;">
+            <h3>User Authentication</h3>
+            
+            <!-- 未登录时显示 -->
+            <div id="auth-form">
+                <div class="input-group" style="flex-direction: column;">
+                    <input id="email-input" type="email" placeholder="Email address">
+                    <input id="password-input" type="password" placeholder="Password (min 6 chars)">
+                </div>
+                <button onclick="signIn()">Login</button>
+                <button class="auth-btn" onclick="signUp()">Register</button>
+            </div>
+
+            <!-- 登录后显示 -->
+            <div id="user-info" style="display: none;">
+                <p style="margin-bottom: 10px;">Welcome back, <strong id="user-email"></strong>!</p>
+                <button class="logout-btn" onclick="signOut()">Log Out</button>
+            </div>
+        </div>
+
+        <!-- ======== 留言板测试区 ======== -->
         <div class="test-box">
             <h3>Backend Test: Message Board</h3>
             <div class="input-group">
@@ -205,8 +234,54 @@
         </div>
     </div>
 
-    <script>
-        async function loadMessages() {
+    <!-- 引入 Supabase 库 -->
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        
+        // ⚠️ 这里替换成你的 Supabase 信息！
+        const supabaseUrl = '你的Project_URL' 
+        const supabaseKey = '你的Publishable_Key' 
+        
+        const supabase = createClient(supabaseUrl, supabaseKey)
+
+        // ========== 账号逻辑 ==========
+        window.signUp = async () => {
+            const email = document.getElementById('email-input').value
+            const password = document.getElementById('password-input').value
+            const { data, error } = await supabase.auth.signUp({ email, password })
+            if (error) alert('注册失败: ' + error.message)
+            else alert('注册成功！尝试直接登录。')
+        }
+
+        window.signIn = async () => {
+            const email = document.getElementById('email-input').value
+            const password = document.getElementById('password-input').value
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+            if (error) alert('登录失败: ' + error.message)
+            else checkUser()
+        }
+
+        window.signOut = async () => {
+            await supabase.auth.signOut()
+            checkUser()
+        }
+
+        async function checkUser() {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (session) {
+                document.getElementById('auth-form').style.display = 'none'
+                document.getElementById('user-info').style.display = 'block'
+                document.getElementById('user-email').textContent = session.user.email
+            } else {
+                document.getElementById('auth-form').style.display = 'block'
+                document.getElementById('user-info').style.display = 'none'
+            }
+        }
+
+        checkUser()
+
+        // ========== 留言板逻辑（调用 Cloudflare Functions） ==========
+        window.loadMessages = async function() {
             try {
                 const res = await fetch('/api/messages');
                 const data = await res.json();
@@ -223,7 +298,7 @@
             }
         }
 
-        async function sendMessage() {
+        window.sendMessage = async function() {
             const input = document.getElementById('msg-input');
             const content = input.value.trim();
             if (!content) return;
@@ -246,7 +321,8 @@
             }
         }
 
-        loadMessages();
+        // 页面加载时读取留言
+        loadMessages()
     </script>
 </body>
 </html>
