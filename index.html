@@ -9,7 +9,7 @@
         .content, .sidebar { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
         
         .sidebar {
-            width: 200px; /* 稍微加宽一点，为了放下登录框 */
+            width: 200px; 
             padding: 40px 15px;
             border-right: 2px solid #43961c; 
             box-sizing: border-box;
@@ -24,13 +24,15 @@
         .lang-link { color: #43961c; text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 30px; }
         .lang-link:hover { text-decoration: underline; }
 
-        /* 侧边栏登录框的样式 */
-        .sidebar-auth input { width: 100%; padding: 6px; margin-bottom: 8px; border: 1px solid #aed581; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
-        .sidebar-auth button { width: 100%; padding: 6px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-bottom: 10px; }
+        /* 侧边栏登录框样式 */
+        .sidebar-auth input { width: 100%; padding: 6px; border: 1px solid #aed581; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; outline: none; }
+        .sidebar-auth button { padding: 6px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
         .sidebar-auth button:hover { background-color: #327513; }
-        .sidebar-auth .logout-btn { background-color: #d32f2f; }
+        .sidebar-auth .register-btn { background-color: #555; }
+        .sidebar-auth .register-btn:hover { background-color: #333; }
+        .sidebar-auth .logout-btn { background-color: #d32f2f; width: 100%; }
         .sidebar-auth .logout-btn:hover { background-color: #b71c1c; }
-        .user-info { font-size: 0.85rem; word-break: break-all; }
+        .user-info { font-size: 0.85rem; word-break: break-all; margin-bottom: 10px; }
 
         .content { margin-left: 200px; padding: 40px 50px; max-width: 800px; box-sizing: border-box; }
         h1 { color: #43961c; font-size: 2.8rem; margin-top: 0; margin-bottom: 10px; font-family: monospace; }
@@ -55,7 +57,7 @@
             .lang-link { margin-bottom: 0; }
             .sidebar-auth { display: flex; gap: 10px; align-items: center;}
             .sidebar-auth input { width: 120px; margin-bottom: 0; }
-            .sidebar-auth button { width: auto; margin-bottom: 0;}
+            .sidebar-auth button { width: auto; }
         }
     </style>
 </head>
@@ -70,11 +72,13 @@
 
         <!-- 侧边栏登录区 -->
         <div class="sidebar-auth">
-            <div id="auth-form" style="display: flex; flex-direction: column;">
+            <div id="auth-form" style="display: flex; flex-direction: column; gap: 8px;">
                 <input id="email-input" type="email" placeholder="Email">
                 <input id="password-input" type="password" placeholder="Password">
-                <button onclick="signIn()">Login</button>
-                <a href="register.html" style="font-size: 0.8rem; text-align: center; border-bottom: none; color: #666;">Create Account</a>
+                <div style="display: flex; gap: 8px;">
+                    <button onclick="signIn()" style="flex: 1;">Login</button>
+                    <button class="register-btn" onclick="window.location.href='/register'" style="flex: 1;">Register</button>
+                </div>
             </div>
             <div id="user-info" style="display: none;">
                 <div class="user-info">Hello,<br><strong id="user-email"></strong></div>
@@ -121,7 +125,7 @@
         const supabaseKey = 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn' 
         const supabase = createClient(supabaseUrl, supabaseKey)
 
-        // ========== 账号逻辑 ==========
+        // 账号逻辑
         window.signIn = async () => {
             const email = document.getElementById('email-input').value
             const password = document.getElementById('password-input').value
@@ -148,15 +152,13 @@
         }
         checkUser()
 
-        // ========== 留言板逻辑 ==========
+        // 留言板逻辑
         window.loadMessages = async function() {
             try {
                 const res = await fetch('/api/messages');
                 const data = await res.json();
                 const list = document.getElementById('msg-list');
-
                 if (data.list && data.list.length > 0) {
-                    // 如果你在第二步加了 email 字段，这里会显示名字
                     list.innerHTML = data.list.map(item => `<li><strong>${item.email || 'Anonymous'}</strong>: ${item.content}</li>`).join('');
                 } else {
                     list.innerHTML = '<li>No messages yet. Be the first!</li>';
@@ -168,7 +170,6 @@
         }
 
         window.sendMessage = async function() {
-            // 检查登录
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
                 alert("Please login first to leave a message!");
@@ -185,7 +186,6 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content: content, email: session.user.email })
                 });
-
                 if (res.ok) {
                     input.value = '';
                     loadMessages();
