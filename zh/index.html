@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grassic-OS | 独立操作系统项目</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #dcedc8; 
+            color: #333;
+            line-height: 1.8;
+            display: flex;
+        }
+
+        .content, .sidebar {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        .sidebar {
+            width: 160px; 
+            padding: 40px 15px;
+            border-right: 2px solid #43961c; 
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .brand-logo {
+            width: 100px;
+            height: auto;
+            display: block;
+        }
+
+        .lang-link {
+            color: #43961c;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .lang-link:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            margin-left: 160px; 
+            padding: 40px 50px;
+            max-width: 800px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #43961c; 
+            font-size: 2.8rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: #555;
+            font-weight: normal;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        a {
+            color: #43961c;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed #43961c;
+        }
+
+        a:hover {
+            background-color: #c5e1a5;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: #666;
+            border-top: 1px solid #aed581;
+            padding-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 2px solid #43961c; 
+                padding: 15px 20px;
+                flex-direction: row;
+                align-items: center;
+            }
+            .content {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="/">
+            <!-- 因为在 zh 文件夹内，需要用 ../ 返回上一级找 logo.svg -->
+            <img src="../logo.png" alt="Grassic Logo" class="brand-logo">
+        </a>
+        <div class="lang-switch">
+            <a href="/" class="lang-link">English &rarr;</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Grassic-OS</h1>
+        <h3>一个从零开始、完全脱离底层依赖的裸机操作系统。</h3>
+        
+        <p><strong>1. 个人独立开发。</strong><br>
+        由 danhuangjar 独立设计与编码。没有依赖现成的 Linux 内核，而是选择直面硬件，从最基本的汇编引导开始构建。</p>
+        
+        <p><strong>2. 完全开源与自由。</strong><br>
+        内核代码完全开源。你可以在 GitHub 上自由查阅所有源码、追踪开发进度，或者参与到这个极客项目中来。</p>
+        
+        <p style="margin-top: 25px;">
+            &rarr; <a href="https://github.com/danhuangjar/Grassic-OS" target="_blank">在 GitHub 上查看源代码</a>
+        </p>
+
+        <div class="footer">
+            &copy; 2026 Grassic Studio.
+        </div>
+    </div>
+
+</body>
+</html>
