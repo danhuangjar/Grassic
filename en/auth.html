@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account | Grassic Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/G.svg">
+    <link rel="stylesheet" href="/auth.css">
+</head>
+<body>
+    <div class="auth-box">
+        <h2>Account</h2>
+        <input id="auth-email" type="email" placeholder="Email address">
+        <input id="auth-password" type="password" placeholder="Password (min 6 chars)">
+
+        <div class="btn-group">
+            <button class="btn-login" onclick="doLogin()">Login</button>
+            <button class="btn-register" onclick="doRegister()">Register</button>
+        </div>
+
+        <a href="/en/" class="back-link">&larr; Back to Home</a>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        const supabase = createClient('https://eilhhwsbawpvfjmtjwbi.supabase.co', 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn')
+
+        window.doLogin = async () => {
+            const email = document.getElementById('auth-email').value
+            const password = document.getElementById('auth-password').value
+            if (!email || !password) return alert("Please fill in email and password.")
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+            if (error) alert('Login Failed: ' + error.message)
+            else window.location.href = '/en/' 
+        }
+
+        window.doRegister = async () => {
+            const email = document.getElementById('auth-email').value
+            const password = document.getElementById('auth-password').value
+            if (!email || !password) return alert("Please fill in email and password.")
+            if (password.length < 6) return alert("Password must be at least 6 characters.")
+
+            const { data, error } = await supabase.auth.signUp({ email, password })
+            if (error) alert('Registration Failed: ' + error.message)
+            else alert('Registration Successful! You can now click Login.')
+        }
+    </script>
+</body>
+</html>

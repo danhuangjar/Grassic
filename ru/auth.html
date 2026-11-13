@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аккаунт | Grassic Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/G.svg">
+    <link rel="stylesheet" href="/auth.css">
+</head>
+<body>
+    <div class="auth-box">
+        <h2>Аккаунт</h2>
+        <input id="auth-email" type="email" placeholder="Эл. почта">
+        <input id="auth-password" type="password" placeholder="Пароль (мин. 6 символов)">
+
+        <div class="btn-group">
+            <button class="btn-login" onclick="doLogin()">Войти</button>
+            <button class="btn-register" onclick="doRegister()">Регистрация</button>
+        </div>
+
+        <a href="/ru/" class="back-link">&larr; На главную</a>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        const supabase = createClient('https://eilhhwsbawpvfjmtjwbi.supabase.co', 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn')
+
+        window.doLogin = async () => {
+            const email = document.getElementById('auth-email').value
+            const password = document.getElementById('auth-password').value
+            if (!email || !password) return alert("Заполните все поля.")
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+            if (error) alert('Ошибка входа: ' + error.message)
+            else window.location.href = '/ru/' 
+        }
+
+        window.doRegister = async () => {
+            const email = document.getElementById('auth-email').value
+            const password = document.getElementById('auth-password').value
+            if (!email || !password) return alert("Заполните все поля.")
+            if (password.length < 6) return alert("Пароль должен быть не менее 6 символов.")
+
+            const { data, error } = await supabase.auth.signUp({ email, password })
+            if (error) alert('Ошибка регистрации: ' + error.message)
+            else alert('Регистрация успешна! Теперь вы можете войти.')
+        }
+    </script>
+</body>
+</html>

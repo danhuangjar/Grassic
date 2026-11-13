@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grassic Studio | Независимая личная студия</title>
+    <meta name="description" content="Grassic - Независимая операционная система, созданная с нуля студией Grassic Studio.">
+    <meta property="og:title" content="Grassic Studio | Независимая личная студия">
+    <meta property="og:image" content="https://grassic.pages.dev/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .mobile-actions { display: flex; align-items: center; gap: 15px; }
+        .lang-trigger { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+        .lang-svg-icon { width: 24px; height: 24px; transition: transform 0.2s; }
+        .lang-trigger:active .lang-svg-icon { transform: scale(1.15); }
+        .lang-wrapper { position: relative; }
+        .lang-dropdown { display: none; position: absolute; background-color: #dcedc8; border: 2px solid #43961c; border-radius: 4px; padding: 12px; z-index: 2000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); flex-direction: column; gap: 12px; white-space: nowrap; }
+        .lang-dropdown.show { display: flex; }
+        @media (max-width: 768px) {
+            .mobile-actions-wrapper { position: static; }
+            .mobile-actions-wrapper .lang-wrapper { position: relative; }
+            .mobile-actions-wrapper .lang-dropdown { top: 100%; right: 0; margin-top: 10px; }
+        }
+        @media (min-width: 769px) {
+            .sidebar-lang-wrapper { position: relative; display: inline-block; width: fit-content; }
+            .sidebar-lang-wrapper .lang-dropdown { bottom: 100%; left: 0; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <a href="/ru/" class="logo-container">
+            <img src="../logo.svg" alt="Logo" class="mobile-logo" style="height: 40px;">
+        </a>
+        <div class="mobile-actions-wrapper">
+            <div class="mobile-actions">
+                <div class="lang-wrapper">
+                    <span class="lang-trigger" onclick="toggleLang(event)">
+                        <img src="../language.svg" alt="Language" class="lang-svg-icon">
+                    </span>
+                    <div class="lang-dropdown">
+                        <a href="/en/" onclick="localStorage.setItem('grassic_lang', 'en')" style="border: none; margin: 0; color: #43961c; font-weight: bold;">English</a>
+                        <a href="/zh/" onclick="localStorage.setItem('grassic_lang', 'zh')" style="border: none; margin: 0; color: #43961c; font-weight: bold;">中文</a>
+                    </div>
+                </div>
+                <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/ru/" style="font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; display: block;">Проект</a>
+        <a href="/ru/about.html" style="font-weight: bold; font-size: 1.1rem; margin-bottom: 20px; display: block;">О нас</a>
+        <div class="auth-area">
+            <div id="mobile-auth-buttons"><button onclick="window.location.href='/ru/auth.html'">Войти / Регистрация</button></div>
+            <div id="mobile-user-info" class="user-info" style="display: none;">
+                <span>Привет, <strong id="mobile-user-email"></strong></span><button class="logout-btn" onclick="signOut()">Выйти</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div>
+            <a href="/ru/"><img src="../logo.svg" alt="Logo" class="brand-logo" style="max-height: 100px; object-fit: contain; margin-bottom: 30px;"></a>
+            <div style="display: flex; flex-direction: column; gap: 15px; font-size: 1.1rem; font-weight: bold;">
+                <a href="/ru/" class="nav-link active" style="border: none;">Проект</a>
+                <a href="/ru/about.html" class="nav-link" style="border: none;">О нас</a>
+            </div>
+        </div>
+        <div class="sidebar-lang-wrapper">
+            <span class="lang-trigger" onclick="toggleLang(event)">
+                <img src="../language.svg" alt="Language" class="lang-svg-icon">
+            </span>
+            <div class="lang-dropdown">
+                <a href="/en/" onclick="localStorage.setItem('grassic_lang', 'en')" style="border: none; margin: 0; color: #43961c; font-weight: bold;">English</a>
+                <a href="/zh/" onclick="localStorage.setItem('grassic_lang', 'zh')" style="border: none; margin: 0; color: #43961c; font-weight: bold;">中文</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="auth-bar">
+            <div class="auth-area">
+                <div id="pc-auth-buttons"><button onclick="window.location.href='/ru/auth.html'">Войти / Регистрация</button></div>
+                <div id="pc-user-info" class="user-info" style="display: none;">
+                    <span>Привет, <strong id="pc-user-email"></strong></span><button class="logout-btn" onclick="signOut()">Выйти</button>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="title-large" style="font-size: 3.5rem;">Grassic OS</h1>
+        <div class="title-small">Операционная система, созданная с нуля.</div>
+        
+        <p><strong>1. Создано независимым разработчиком.</strong><br>Полностью спроектировано и написано iwateotdd, вдали от удобств существующих операционных систем.</p>
+        <p><strong>2. Бесплатно и с открытым исходным кодом.</strong><br>Ядро полностью открыто. Вы можете изучить исходный код, следить за разработкой и вносить свой вклад на GitHub.</p>
+        <p style="margin-top: 30px;">&rarr; <a href="https://github.com/iwateotdd/Grassic-OS" target="_blank">Исходный код на GitHub</a></p>
+
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <strong>Grassic Studio</strong>
+                    <p>Независимая личная студия, создающая с нуля.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/iwateotdd/Grassic-OS" target="_blank">GitHub</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Grassic Studio. Все права защищены. | Работает на Cloudflare & Supabase.
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        const supabase = createClient('https://eilhhwsbawpvfjmtjwbi.supabase.co', 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn')
+        window.toggleMenu = () => document.getElementById('mobileMenu').classList.toggle('active');
+        window.signOut = async () => { await supabase.auth.signOut(); checkUser(); }
+        window.toggleLang = (e) => {
+            e.preventDefault(); e.stopPropagation();
+            const trigger = e.currentTarget;
+            const dropdown = trigger.nextElementSibling;
+            document.querySelectorAll('.lang-dropdown').forEach(el => { if (el !== dropdown) el.classList.remove('show'); });
+            if (dropdown) dropdown.classList.toggle('show');
+        };
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-trigger')) {
+                document.querySelectorAll('.lang-dropdown').forEach(el => el.classList.remove('show'));
+            }
+        });
+        async function checkUser() {
+            const { data: { session } } = await supabase.auth.getSession()
+            const isLogged = !!session
+            document.getElementById('pc-auth-buttons').style.display = isLogged ? 'none' : 'block'
+            document.getElementById('mobile-auth-buttons').style.display = isLogged ? 'none' : 'block'
+            if (isLogged) {
+                document.getElementById('pc-user-info').style.display = 'flex'
+                document.getElementById('mobile-user-info').style.display = 'flex'
+                document.getElementById('pc-user-email').textContent = session.user.email
+                document.getElementById('mobile-user-email').textContent = session.user.email
+            } else {
+                document.getElementById('pc-user-info').style.display = 'none'
+                document.getElementById('mobile-user-info').style.display = 'none'
+            }
+        }
+        checkUser()
+    </script>
+</body>
+</html>

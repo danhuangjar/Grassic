@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于与联系 | Grassic Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body { display: block; background-color: #dcedc8; margin: 0; }
+        .sidebar { width: 200px; padding: 40px 20px; border-right: 2px solid #43961c; height: 100vh; position: fixed; top: 0; left: 0; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+        .about-logo { width: 100px; height: auto; display: block; margin-bottom: 40px; }
+        .nav-link { display: block; padding: 10px 15px; margin-bottom: 5px; border-radius: 6px; color: #333; font-weight: bold; font-size: 1.1rem; text-decoration: none; border: none; transition: background-color 0.2s; }
+        .nav-link:hover { background-color: #c5e1a5; color: #333; }
+        .nav-link.active { background-color: #b2d38f; color: #43961c; }
+        .about-content { margin-left: 200px; padding: 60px 50px; max-width: 800px; box-sizing: border-box; min-height: 100vh; }
+        .about-section { margin-bottom: 35px; }
+        .about-section h2 { color: #43961c; font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px dashed #aed581; padding-bottom: 5px; display: inline-block; }
+        .terminal-quote { border-left: 3px solid #43961c; padding-left: 15px; color: #555; font-style: italic; margin: 15px 0; }
+        .contact-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .contact-item { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        .contact-item span { color: #43961c; font-weight: bold; width: 60px; }
+        .back-home-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #43961c; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; border-bottom: none; transition: 0.2s; }
+        .back-home-btn:hover { background-color: #327513; color: white; }
+        .footer { margin-top: 60px; font-size: 0.85rem; color: #666; border-top: 1px solid #aed581; padding-top: 15px; }
+        .lang-wrapper { position: relative; }
+        .lang-trigger { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; }
+        .lang-svg-icon { width: 24px; height: 24px; transition: transform 0.2s; }
+        .lang-trigger:hover .lang-svg-icon { transform: scale(1.15); }
+        .lang-dropdown { display: none; position: absolute; background-color: #dcedc8; border: 2px solid #43961c; border-radius: 4px; padding: 12px; z-index: 2000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); flex-direction: column; gap: 12px; white-space: nowrap; }
+        .lang-dropdown.show { display: flex; }
+        .mobile-header { display: none; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .about-content { margin-left: 0; padding: 30px 20px; }
+            .mobile-header { display: flex; justify-content: space-between; align-items: center; background-color: #dcedc8; border-bottom: 2px solid #43961c; padding: 0 20px; height: 60px; position: sticky; top: 0; z-index: 1000; }
+            .mobile-header a { display: inline-flex; align-items: center; height: 100%; }
+            .mobile-logo { height: 40px; width: auto; object-fit: contain; margin-top: 4px; }
+            .mobile-header .lang-dropdown { top: 100%; right: 0; margin-top: 10px; }
+        }
+        @media (min-width: 769px) { .sidebar .lang-dropdown { bottom: 100%; left: 0; margin-bottom: 10px; } }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <a href="/zh/"><img src="/logo.svg" alt="Logo" class="mobile-logo"></a>
+        <div class="lang-wrapper">
+            <span class="lang-trigger" onclick="toggleLang(event)"><img src="/language.svg" alt="Language" class="lang-svg-icon"></span>
+            <div class="lang-dropdown">
+                <a href="/en/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">English</a>
+                <a href="/ru/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">Русский</a>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div>
+            <a href="/zh/"><img src="/logo.svg" alt="Logo" class="about-logo"></a>
+            <div>
+                <a href="/zh/" class="nav-link">项目</a>
+                <a href="/zh/about.html" class="nav-link active">关于</a>
+            </div>
+        </div>
+        <div class="lang-wrapper">
+            <span class="lang-trigger" onclick="toggleLang(event)"><img src="/language.svg" alt="Language" class="lang-svg-icon"></span>
+            <div class="lang-dropdown">
+                <a href="/en/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">English</a>
+                <a href="/ru/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">Русский</a>
+            </div>
+        </div>
+    </div>
+    <div class="about-content">
+        <h1 class="title-large" style="font-size: 2.8rem; margin-bottom: 5px;">关于</h1>
+        <div class="title-medium" style="font-size: 1.2rem;">Grassic Studio</div>
+        <div class="about-section" style="margin-top: 30px;">
+            <h2>我们是谁</h2>
+            <div class="terminal-quote">"一个从零构建的独立个人工作室。"</div>
+            <p style="color:#444;">Grassic Studio 由 iwateotdd 创立，致力于底层系统编程与独立软件开发。我们的核心项目是 Grassic OS，一个完全从零开始构建的裸机操作系统。</p>
+        </div>
+        <div class="about-section">
+            <h2>联系我</h2>
+            <p style="color:#444;">无论你想探讨操作系统开发、参与开源协作，还是仅仅想打个招呼，都欢迎随时联系。</p>
+            <div class="contact-list">
+                <div class="contact-item"><span>Email:</span><a href="mailto:grassicstudio@qq.com">grassicstudio@qq.com</a></div>
+                <div class="contact-item"><span>GitHub:</span><a href="https://github.com/iwateotdd" target="_blank">@iwateotdd</a></div>
+            </div>
+        </div>
+        <a href="/zh/" class="back-home-btn">&larr; 返回主页</a>
+        <div class="footer">&copy; 2026 Grassic Studio. All rights reserved.</div>
+    </div>
+    <script>
+        window.toggleLang = (e) => {
+            e.preventDefault(); e.stopPropagation();
+            const dropdown = e.currentTarget.nextElementSibling;
+            document.querySelectorAll('.lang-dropdown').forEach(el => { if (el !== dropdown) el.classList.remove('show'); });
+            if (dropdown) dropdown.classList.toggle('show');
+        };
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-trigger')) document.querySelectorAll('.lang-dropdown').forEach(el => el.classList.remove('show'));
+        });
+    </script>
+</body>
+</html>

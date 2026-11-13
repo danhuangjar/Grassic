@@ -1,0 +1,96 @@
+/* 页面平滑淡入效果 */
+body {
+    animation: fadeIn 0.35s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@font-face {
+    font-family: 'Maple Mono';
+    src: url('/MapleMono-NF-CN-Thin.woff2') format('woff2');
+    font-display: swap;
+}
+
+body, html { margin: 0; padding: 0; height: 100%; background-color: #dcedc8; color: #333; line-height: 1.6; font-family: 'Maple Mono', monospace; -webkit-font-smoothing: antialiased; }
+a { color: #43961c; text-decoration: none; font-weight: 600; border-bottom: 1px dashed #43961c; }
+a:hover { background-color: #c5e1a5; }
+
+.sidebar { width: 160px; padding: 40px 15px; border-right: 2px solid #43961c; height: 100vh; position: fixed; top: 0; left: 0; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+.content { margin-left: 160px; padding: 40px 50px; max-width: 800px; box-sizing: border-box; }
+
+.brand-logo { width: 100px; height: auto; display: block; }
+
+.title-large { color: #43961c; font-size: 4.5rem; font-weight: bold; margin: 0; letter-spacing: -2px; line-height: 1.1; }
+.title-medium { color: #43961c; font-size: 2rem; font-weight: 600; margin: 5px 0 20px 0; letter-spacing: -0.5px; }
+.title-small { font-size: 1.1rem; color: #555; font-weight: 400; margin-bottom: 40px; }
+
+p { margin-bottom: 24px; font-size: 1.05rem; color: #444; line-height: 1.8; letter-spacing: 0.5px; }
+
+.footer { margin-top: 60px; border-top: 1px solid #aed581; padding-top: 20px; font-size: 0.85rem; color: #666; }
+.footer-content { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 20px; }
+.footer-left strong { color: #43961c; font-size: 1.1rem; }
+.footer-left p { margin: 5px 0 0 0; font-size: 0.85rem; }
+.footer-links a { margin-left: 15px; color: #666; border-bottom: none; font-weight: normal; }
+.footer-links a:hover { color: #43961c; background: none; text-decoration: underline; }
+.footer-bottom { text-align: center; color: #888; font-size: 0.75rem; border-top: 1px dashed #c5e1a5; padding-top: 15px; }
+
+.auth-bar { display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px; }
+.auth-area button { padding: 8px 16px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-family: inherit; }
+.user-info { display: flex; align-items: center; gap: 15px; font-size: 0.9rem; color: #555; }
+.logout-btn { background-color: #d32f2f !important; padding: 6px 12px !important; font-size: 0.85rem !important; }
+
+.mobile-header, .mobile-menu { display: none; }
+
+@media (max-width: 768px) {
+    .sidebar, .auth-bar { display: none; }
+    .content { margin-left: 0; padding: 20px; }
+    .title-large { font-size: 3.5rem; }
+    .title-medium { font-size: 1.6rem; }
+    
+    .mobile-header { 
+        display: flex; justify-content: space-between; align-items: center; 
+        background-color: #dcedc8; border-bottom: 2px solid #43961c; 
+        padding: 0 20px; height: 60px; 
+        position: sticky; top: 0; z-index: 1000; 
+    }
+    
+    /* 修复主页 Logo 触发区域过大的问题 */
+    .logo-container { 
+        display: inline-flex; 
+        align-items: center; 
+        height: 100%; 
+    }
+    /* 让图片真正常规大小，不撑开盒子 */
+    .mobile-logo { 
+        height: 40px; 
+        width: auto; 
+        max-height: 40px;
+        object-fit: contain;
+        margin: 0;
+    }
+    
+    .menu-btn { background: none; border: none; font-size: 2rem; cursor: pointer; color: #43961c; padding: 0; line-height: 1; }
+    
+    .mobile-menu { 
+        display: none; flex-direction: column; background-color: #dcedc8; 
+        padding: 20px; border-bottom: 2px solid #43961c; 
+        position: absolute; top: 60px; left: 0; width: 100%; 
+        box-sizing: border-box; z-index: 999; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a { margin-bottom: 20px; }
+    .mobile-menu button { width: 100%; padding: 12px; }
+}
+
+/* 新增侧边栏高亮样式 */
+.nav-link {
+    display: block; padding: 10px 15px; margin-bottom: 5px;
+    border-radius: 6px; color: #333; font-weight: bold;
+    font-size: 1.1rem; text-decoration: none; border: none;
+    transition: background-color 0.2s;
+}
+.nav-link:hover { background-color: #c5e1a5; color: #333; }
+.nav-link.active { background-color: #b2d38f; color: #43961c; }
