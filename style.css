@@ -1,16 +1,23 @@
 @font-face {
-    font-family: 'LXGW Neo XiHei';
-    src: url('/LXGWNeoXiHeiPlus.woff2') format('woff2');
+    font-family: 'Inter';
+    src: url('/Inter.woff2') format('woff2');
+    font-weight: 100 900; /* 支持可变字重，如果你下的是单字重，可以删掉这行 */
     font-display: swap;
 }
-body, html { margin: 0; padding: 0; background-color: #dcedc8; color: #333; font-family: 'LXGW Neo XiHei', sans-serif; line-height: 1.8; font-weight: 400; }
+
+body, html { 
+    margin: 0; padding: 0; background-color: #dcedc8; color: #333; 
+    /* 👇 核心混排逻辑：优先用 Inter，中文用苹果/微软系统字体，实在不行用霞鹜兜底 */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'LXGW Neo XiHei', sans-serif; 
+    line-height: 1.8; font-weight: 300; /* 全局使用细体，解决太粗的问题 */
+}
 a { color: #43961c; text-decoration: none; font-weight: 400; }
 a:hover { opacity: 0.8; }
 
 /* 基础文字 */
-.title-large { color: #43961c; font-size: 4.5rem; font-weight: bold; margin: 0 0 10px 0; line-height: 1.1; }
-.title-small { font-size: 1.2rem; color: #555; font-weight: 400; margin-bottom: 40px; }
-p { margin-bottom: 24px; font-size: 1.1rem; color: #222; line-height: 2; font-weight: 400; word-wrap: break-word; }
+.title-large { color: #43961c; font-size: 4.5rem; font-weight: 500; margin: 0 0 10px 0; line-height: 1.1; }
+.title-small { font-size: 1.2rem; color: #555; font-weight: 300; margin-bottom: 40px; }
+p { margin-bottom: 24px; font-size: 1.1rem; color: #222; line-height: 2; font-weight: 300; word-wrap: break-word; }
 .footer { margin-top: 60px; border-top: 1px solid #aed581; padding-top: 20px; font-size: 0.85rem; color: #666; }
 .footer-content { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
 .footer-bottom { text-align: center; color: #888; font-size: 0.75rem; border-top: 1px dashed #c5e1a5; padding-top: 15px; }
@@ -18,7 +25,7 @@ p { margin-bottom: 24px; font-size: 1.1rem; color: #222; line-height: 2; font-we
 /* 按钮与语言 */
 .auth-area button { padding: 6px 16px; background-color: #43961c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 400; }
 .nav-link { font-weight: 400; font-size: 1.05rem; color: #333; border: none; }
-.nav-link.active { color: #327513; font-weight: bold; }
+.nav-link.active { color: #327513; font-weight: 500; }
 .lang-wrapper { position: relative; }
 .lang-trigger { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; cursor: pointer; }
 .lang-svg-icon { width: 24px; height: 24px; }
@@ -54,80 +61,31 @@ p { margin-bottom: 24px; font-size: 1.1rem; color: #222; line-height: 2; font-we
         position: fixed; top: 0; left: 0; z-index: 1000;
     }
     .sidebar > div:nth-child(1) { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 30px !important; }
-    .brand-logo { width: 45px !important; margin: 0 !important; }
+    .brand-logo { width: 45px !important; margin-top: 6px !important; margin-left: -15px !important; }
     .nav-link { padding: 0 !important; margin: 0 !important; background: transparent !important; }
 
-    /* 电脑端把注册按钮重新显示出来，钉在右上角 */
+    /* 电脑端注册按钮钉在右上角 */
     .content .auth-bar { 
         display: flex !important; position: fixed !important; top: 18px !important; right: 100px !important; margin: 0 !important; z-index: 1001 !important; 
     }
     .sidebar-lang-wrapper { position: fixed !important; top: 17px !important; right: 40px !important; z-index: 1001 !important; }
     .sidebar-lang-wrapper .lang-dropdown { top: 100%; right: 0; left: auto; margin-top: 15px; }
 
-    /* 🔥 核心修改：改为经典的上下结构，而不是左右分栏 */
+    /* 经典上下结构，自动换行 */
     .content { 
-        margin: 120px auto 0 !important; 
-        padding: 0 40px !important; 
-        max-width: 900px; /* 限制最大宽度 */
-        display: block;   /* 取消 grid 分栏 */
-        box-sizing: border-box; 
+        margin: 120px auto 0 !important; padding: 0 40px !important; max-width: 900px; display: block; box-sizing: border-box; 
     }
-    .hero-section { 
-        margin-bottom: 40px; /* 标题和正文的间距 */
-    }
+    .hero-section { margin-bottom: 40px; }
     .hero-section .title-large { font-size: 4.5rem; margin: 0 0 15px 0; }
     .hero-section .title-small { font-size: 1.3rem; margin-bottom: 0; }
     
     .text-section p { 
-        font-size: 1.15rem; 
-        line-height: 2.2; /* 加大行高，呼吸感更强 */
-        margin-bottom: 30px; 
-        word-wrap: break-word; /* 强制自动换行 */
-        white-space: normal;
+        font-size: 1.15rem; line-height: 2.2; margin-bottom: 30px; word-wrap: break-word; white-space: normal;
     }
-    .text-section a.main-link { display: inline-block; background-color: #43961c; color: white; padding: 12px 30px; border-radius: 30px; }
+    .text-section a.main-link { 
+        display: inline-block !important; background-color: transparent !important; color: #43961c !important;
+        padding: 0 !important; border-radius: 0 !important; text-decoration: underline !important;
+        font-size: 1.15rem !important; font-weight: 400 !important; margin-top: 20px !important;
+    }
     .footer { margin-top: 60px; padding-top: 30px; text-align: center; }
-}
-
-/* 让电脑端的项目和关于拉开距离 */
-@media (min-width: 769px) {
-    .sidebar > div:nth-child(1) {
-        gap: 60px !important; /* 把原来的 30px 改成 60px，距离翻倍 */
-    }
-    
-    /* 如果你想让它们更清晰地分开，可以给它们加上中间的分隔线，或者分别加一点内边距 */
-    .top-nav-links {
-        display: flex;
-        gap: 40px !important; /* 项目与关于之间的距离 */
-    }
-    
-    .nav-link {
-        font-size: 1.1rem !important;
-        letter-spacing: 1px; /* 微微拉开字间距，更显高级 */
-    }
-}
-
-/* 电脑端专属：LOGO 往左下微调 */
-@media (min-width: 769px) {
-    .brand-logo {
-        margin-top: 6px !important;    /* 往下移 6 像素 */
-        margin-left: -15px !important; /* 往左移 15 像素，突破原本的内边距 */
-        width: 50px !important;        /* 如果觉得小，可以顺便放大一点，你可以自己改数值 */
-    }
-}
-
-/* 强制恢复正文里的普通链接样式，保持纯净 */
-.text-section a.main-link {
-    display: inline-block !important;
-    background-color: transparent !important; 
-    color: #43961c !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    text-decoration: underline !important;
-    font-size: 1.15rem !important;
-    font-weight: 400 !important;
-    margin-top: 20px !important;
-}
-.text-section a.main-link:hover {
-    opacity: 0.8;
 }
