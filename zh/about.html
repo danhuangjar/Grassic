@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 | Grassic Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .about-section { margin-bottom: 35px; }
+        .about-section h2 { color: #43961c; font-size: 1.3rem; margin-bottom: 15px; border-bottom: 1px dashed #aed581; padding-bottom: 5px; display: inline-block; }
+        .terminal-quote { border-left: 3px solid #43961c; padding-left: 15px; color: #555; font-style: italic; margin: 15px 0; }
+        .contact-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .contact-item { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        .contact-item span { color: #43961c; font-weight: bold; width: 60px; }
+        .back-home-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #43961c; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; border-bottom: none; }
+    </style>
+</head>
+<body>
+    <!-- 手机端顶部导航 -->
+    <div class="mobile-header">
+        <a href="/zh/" class="logo-container"><img src="/logo.svg" alt="Logo" class="mobile-logo"></a>
+        <div class="mobile-actions-wrapper" style="display:flex; align-items:center; gap:15px;">
+            <div class="lang-wrapper">
+                <span class="lang-trigger" onclick="toggleLang(event)"><img src="/language.svg" alt="Language" class="lang-svg-icon"></span>
+                <div class="lang-dropdown">
+                    <a href="/en/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">English</a>
+                    <a href="/ru/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">Русский</a>
+                </div>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </div>
+
+    <!-- 手机端下拉菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/zh/">项目</a>
+        <a href="/zh/about.html">关于</a>
+        <div class="auth-area" style="margin-top: 15px;">
+            <div id="mobile-auth-buttons"><button onclick="window.location.href='/zh/auth.html'">注册 / 登录</button></div>
+            <div id="mobile-user-info" style="display: none;">
+                <span>你好，<strong id="mobile-user-email"></strong></span><button class="logout-btn" onclick="signOut()">退出登录</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 电脑端顶部导航 -->
+    <div class="sidebar">
+        <div>
+            <a href="/zh/"><img src="/logo.svg" alt="Logo" class="brand-logo"></a>
+            <div class="top-nav-links">
+                <a href="/zh/" class="nav-link">项目</a>
+                <a href="/zh/about.html" class="nav-link active">关于</a>
+            </div>
+        </div>
+        
+        <div class="sidebar-lang-wrapper">
+            <span class="lang-trigger" onclick="toggleLang(event)"><img src="/language.svg" alt="Language" class="lang-svg-icon"></span>
+            <div class="lang-dropdown">
+                <a href="/en/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">English</a>
+                <a href="/ru/about.html" style="border: none; margin: 0; color: #43961c; font-weight: bold;">Русский</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 正文区域 (复用主页的 content 布局) -->
+    <div class="content">
+        <!-- 这里是强行插入的注册按钮，只有电脑端能看见 -->
+        <div class="auth-bar">
+            <div class="auth-area">
+                <div id="pc-auth-buttons"><button onclick="window.location.href='/zh/auth.html'">注册 / 登录</button></div>
+                <div id="pc-user-info" style="display: none;">
+                    <span>你好，<strong id="pc-user-email"></strong></span><button class="logout-btn" onclick="signOut()">退出登录</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-section">
+            <h1 class="title-large">关于我们</h1>
+            <div class="title-small">Grassic Studio</div>
+        </div>
+        
+        <div class="text-section">
+            <div class="about-section" style="margin-top: 0;">
+                <h2>我们是谁</h2>
+                <div class="terminal-quote">"一个从零构建的独立个人工作室。"</div>
+                <p style="color:#444;">Grassic Studio 由 danhuangjar 创立，致力于底层系统编程与独立软件开发。我们的核心项目是 Grassic OS，一个完全从零开始构建的裸机操作系统。我们正在寻找志同道合的极客伙伴。</p>
+            </div>
+            
+            <div class="about-section">
+                <h2>联系与加入</h2>
+                <p style="color:#444;">无论你想探讨操作系统开发、参与开源协作，还是正式加入我们的开发团队，都欢迎随时联系。</p>
+                <div class="contact-list">
+                    <div class="contact-item"><span>邮箱:</span><a href="mailto:danhuangjar@outlook.com">danhuangjar@outlook.com</a></div>
+                    <div class="contact-item"><span>GitHub:</span><a href="https://github.com/danhuangjar" target="_blank">@danhuangjar</a></div>
+                </div>
+            </div>
+
+            <a href="/zh/" class="back-home-btn">&larr; 返回主页</a>
+        </div>
+
+        <div class="footer" style="margin-top: 60px; border-top: 1px solid #aed581; padding-top: 20px; text-align: center;">
+            <div class="footer-bottom">&copy; 2026 Grassic Studio. All rights reserved.</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        const supabase = createClient('https://eilhhwsbawpvfjmtjwbi.supabase.co', 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn')
+        
+        window.toggleMenu = () => document.getElementById('mobileMenu').classList.toggle('active');
+        window.signOut = async () => { await supabase.auth.signOut(); checkUser(); }
+        window.toggleLang = (e) => {
+            e.preventDefault(); e.stopPropagation();
+            const dropdown = e.currentTarget.nextElementSibling;
+            document.querySelectorAll('.lang-dropdown').forEach(el => { if (el !== dropdown) el.classList.remove('show'); });
+            if (dropdown) dropdown.classList.toggle('show');
+        };
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-trigger') && !e.target.closest('.menu-btn')) {
+                document.querySelectorAll('.lang-dropdown').forEach(el => el.classList.remove('show'));
+                document.getElementById('mobileMenu').classList.remove('active');
+            }
+        });
+
+        async function checkUser() {
+            const { data: { session } } = await supabase.auth.getSession()
+            const isLogged = !!session
+            document.getElementById('pc-auth-buttons').style.display = isLogged ? 'none' : 'block'
+            document.getElementById('mobile-auth-buttons').style.display = isLogged ? 'none' : 'block'
+            if (isLogged) {
+                document.getElementById('pc-user-info').style.display = 'flex'
+                document.getElementById('mobile-user-info').style.display = 'flex'
+                document.getElementById('pc-user-email').textContent = session.user.email
+                document.getElementById('mobile-user-email').textContent = session.user.email
+            } else {
+                document.getElementById('pc-user-info').style.display = 'none'
+                document.getElementById('mobile-user-info').style.display = 'none'
+            }
+        }
+        checkUser()
+    </script>
+</body>
+</html>

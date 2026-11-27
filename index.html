@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grassic Studio | Redirecting...</title>
+    <style>
+        @font-face {
+            font-family: 'LXGW Neo XiHei', sans-serif;
+            src: url('MapleMono-NF-CN-Thin.woff2') format('woff2');
+            font-display: swap;
+        }
+        body { 
+            margin: 0; 
+            height: 100vh; 
+            background-color: #dcedc8; 
+            color: #43961c; 
+            font-family: 'Poppins', 'PingFang SC', 'Microsoft YaHei', sans-serif, sans-serif; 
+            font-size: 1.1rem;
+            overflow: hidden; 
+        }
+        
+        .redirect-text {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: fadeOut 0.5s ease-in forwards;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.1rem;
+            background-color: #43961c;
+            animation: blink 0.8s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; } /* 大部分时间保持不动 */
+            100% { opacity: 0; } /* 最后平滑消失 */
+        }
+
+        @media (max-width: 768px) {
+            .redirect-text { top: 30px; left: 20px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-text">
+        正在进入 Grassic 官网...<span class="cursor"></span>
+    </div>
+
+    <script>
+        let savedLang = localStorage.getItem('grassic_lang');
+        if (!savedLang) {
+            let userLang = (navigator.language || navigator.userLanguage).toLowerCase();
+            if (userLang.includes('zh')) savedLang = 'zh';
+            else if (userLang.includes('ru')) savedLang = 'ru';
+            else savedLang = 'en';
+        }
+        
+        let targetUrl = '/en/';
+        if (savedLang === 'zh') targetUrl = '/zh/';
+        else if (savedLang === 'ru') targetUrl = '/ru/';
+
+        // 延迟 400 毫秒跳转，配合动画的淡出时间
+        setTimeout(() => {
+            window.location.replace(targetUrl); 
+        }, 400);
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grassic Studio | 独立个人工作室</title>
+    <meta name="description" content="Grassic - 由 Grassic Studio 完全从零构建的独立裸机操作系统。">
+    <meta property="og:title" content="Grassic Studio | 独立个人工作室">
+    <meta property="og:image" content="https://grassic.pages.dev/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- 手机端顶部导航 -->
+    <div class="mobile-header">
+        <a href="/en/" class="logo-container"><img src="/logo.svg" alt="Logo" class="mobile-logo"></a>
+        <div class="mobile-actions-wrapper" style="display:flex; align-items:center; gap:15px;">
+            <div class="lang-wrapper">
+                <span class="lang-trigger" onclick="toggleLang(event)"><img src="/language.svg" alt="Language" class="lang-svg-icon"></span>
+                <div class="lang-dropdown">
+                    <a href="/zh/" style="border: none; margin: 0; color: #43961c; font-weight: bold;">中文</a>
+                    <a href="/ru/" style="border: none; margin: 0; color: #43961c; font-weight: bold;">Русский</a>
+                </div>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </div>
+
+    <!-- 手机端下拉菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/en/">Project</a>
+        <a href="/en/about.html">About</a>
+        <div class="auth-area" style="margin-top: 15px;">
+            <div id="mobile-auth-buttons"><button onclick="window.location.href='/zh/auth.html'">register/login</button></div>
+            <div id="mobile-user-info" style="display: none;">
+                <span>Hello, <strong id="mobile-user-email"></strong></span><button class="logout-btn" onclick="signOut()">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 电脑端顶部导航 -->
+    <div class="sidebar">
+        <div>
+            <a href="/en/"><img src="/logo.svg" alt="Logo" class="brand-logo"></a>
+            <div class="top-nav-links">
+                <a href="/en/" class="nav-link active">Project</a>
+                <a href="/en/about.html" class="nav-link">About</a>
+            </div>
+        </div>
+        
+        <div class="sidebar-lang-wrapper">
+            <span class="lang-trigger" onclick="toggleLang(event)"><img src="/language.svg" alt="Language" class="lang-svg-icon"></span>
+            <div class="lang-dropdown">
+                <a href="/zh/" style="border: none; margin: 0; color: #43961c; font-weight: bold;">中文</a>
+                <a href="/ru/" style="border: none; margin: 0; color: #43961c; font-weight: bold;">Русский</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 电脑端正文区 -->
+    <div class="content">
+        <div class="auth-bar">
+            <div class="auth-area">
+                <div id="pc-auth-buttons"><button onclick="window.location.href='/zh/auth.html'">register/login</button></div>
+                <div id="pc-user-info" style="display: none;">
+                    <span>Hello, <strong id="pc-user-email"></strong></span><button class="logout-btn" onclick="signOut()">Log Out</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-section">
+            <h1 class="title-large">Grassic OS</h1>
+            <div class="title-small">A bare-metal operating system built from scratch.</div>
+        </div>
+        
+        <div class="text-section">
+            <p><strong>1. Crafted by a solo developer.</strong><br>Designed and coded entirely by danhuangjar, stepping away from the comforts of existing operating systems to build something from the ground up.</p>
+            <p><strong>2. Free & Open Source.</strong><br>The kernel is fully open source. You can explore the raw code, track its development, and contribute to the project on GitHub.</p>
+            <p style="margin-top: 30px;">&rarr; <a href="https://github.com/danhuangjar/Grassic-OS" class="main-link" target="_blank">View Source Code on GitHub</a></p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <strong>Grassic Studio</strong>
+                    <p>An independent personal studio building from scratch.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/danhuangjar/Grassic-OS" target="_blank">GitHub</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Grassic Studio. All rights reserved. | Built with Cloudflare & Supabase.
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+        const supabase = createClient('https://eilhhwsbawpvfjmtjwbi.supabase.co', 'sb_publishable_b6M1Xyi2aTEH67iH20IcGw_DqLdwbEn')
+        
+        window.toggleMenu = () => document.getElementById('mobileMenu').classList.toggle('active');
+        window.signOut = async () => { await supabase.auth.signOut(); checkUser(); }
+        
+        window.toggleLang = (e) => {
+            e.preventDefault(); e.stopPropagation();
+            const dropdown = e.currentTarget.nextElementSibling;
+            document.querySelectorAll('.lang-dropdown').forEach(el => { if (el !== dropdown) el.classList.remove('show'); });
+            if (dropdown) dropdown.classList.toggle('show');
+        };
+        
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-trigger') && !e.target.closest('.menu-btn')) {
+                document.querySelectorAll('.lang-dropdown').forEach(el => el.classList.remove('show'));
+                document.getElementById('mobileMenu').classList.remove('active');
+            }
+        });
+
+        async function checkUser() {
+            const { data: { session } } = await supabase.auth.getSession()
+            const isLogged = !!session
+            document.getElementById('pc-auth-buttons').style.display = isLogged ? 'none' : 'block'
+            document.getElementById('mobile-auth-buttons').style.display = isLogged ? 'none' : 'block'
+            if (isLogged) {
+                document.getElementById('pc-user-info').style.display = 'flex'
+                document.getElementById('mobile-user-info').style.display = 'flex'
+                document.getElementById('pc-user-email').textContent = session.user.email
+                document.getElementById('mobile-user-email').textContent = session.user.email
+            } else {
+                document.getElementById('pc-user-info').style.display = 'none'
+                document.getElementById('mobile-user-info').style.display = 'none'
+            }
+        }
+        checkUser()
+    </script>
+</body>
+</html>
