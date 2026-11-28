@@ -18,6 +18,7 @@
             <button class="btn-register" onclick="doRegister()">Register</button>
         </div>
 
+         <div id="email-msg" style="display:none; text-align:center; color:#43961c; margin-bottom:15px; font-weight:bold;"></div>
         <a href="/en/" class="back-link">&larr; Back to Homelarr; Home</a>
     </div>
 
@@ -43,7 +44,7 @@
 
             const { data, error } = await supabase.auth.signUp({ email, password })
             if (error) alert('Registration Failed: ' + error.message)
-            else alert('Registration Successful! You can now click Login.')
+            else document.getElementById('email-msg').style.display = 'block'; document.getElementById('email-msg').innerText = 'Verification email sent. Please check your inbox.';
         }
     </script>
 </body>

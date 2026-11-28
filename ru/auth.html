@@ -18,6 +18,7 @@
             <button class="btn-register" onclick="doRegister()">Регистрация</button>
         </div>
 
+         <div id="email-msg" style="display:none; text-align:center; color:#43961c; margin-bottom:15px; font-weight:bold;"></div>
         <a href="/ru/" class="back-link">&larr; На главнуюlarr; Домой</a>
     </div>
 
@@ -43,7 +44,7 @@
 
             const { data, error } = await supabase.auth.signUp({ email, password })
             if (error) alert('Ошибка регистрации: ' + error.message)
-            else alert('Регистрация успешна! Теперь вы можете войти.')
+            else document.getElementById('email-msg').style.display = 'block'; document.getElementById('email-msg').innerText = 'Письмо с подтверждением отправлено. Проверьте почту.';
         }
     </script>
 </body>

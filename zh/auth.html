@@ -18,6 +18,7 @@
             <button class="btn-register" onclick="doRegister()">注册</button>
         </div>
         
+         <div id="email-msg" style="display:none; text-align:center; color:#43961c; margin-bottom:15px; font-weight:bold;"></div>
         <a href="/zh/" class="back-link">← 返回主页</a>
     </div>
 
@@ -43,7 +44,7 @@
             
             const { data, error } = await supabase.auth.signUp({ email, password })
             if (error) alert('注册失败: ' + error.message)
-            else alert('注册成功！请点击登录。')
+            else document.getElementById('email-msg').style.display = 'block'; document.getElementById('email-msg').innerText = '验证邮件已发送至您的邮箱，请查收。';
         }
     </script>
 </body>
